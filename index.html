@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora Fator R - Simples Nacional | Anexo III vs Anexo V</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #0f172a;
+            --bg-card: #ffffff;
+            --text-dark: #0f172a;
+            --text-muted: #64748b;
+            --accent-green: #059669;
+            --bg-green: #ecfdf5;
+            --border-green: #a7f3d0;
+            --accent-blue: #2563eb;
+            --bg-slate: #f8fafc;
+            --border-light: #e2e8f0;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.1);
+            --shadow-lg: 0 10px 25px -5px rgba(0,0,0,0.05), 0 8px 10px -6px rgba(0,0,0,0.01);
+            --radius: 12px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            -webkit-user-select: none; /* Disable copy/select */
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        /* Allow selection only for content marked as copyable */
+        .copyable, .copyable * {
+            -webkit-user-select: text !important;
+            -moz-user-select: text !important;
+            -ms-user-select: text !important;
+            user-select: text !important;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-dark);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Header / Banner Dark Area */
+        header {
+            padding: 40px 20px 80px 20px;
+            text-align: center;
+            color: #ffffff;
+            max-width: 1000px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .badge {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            margin-bottom: 20px;
+            letter-spacing: 0.5px;
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            font-weight: 800;
+            margin-bottom: 12px;
+            letter-spacing: -0.5px;
+        }
+
+        p.subtitle {
+            color: #94a3b8;
+            font-size: 1.05rem;
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        /* Main Grid Container */
+        main {
+            max-width: 1100px;
+            margin: -40px auto 40px auto;
+            padding: 0 20px;
+            width: 100%;
+            flex: 1;
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+        }
+
+        @media (max-width: 868px) {
+            .grid-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .card {
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            padding: 28px;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--border-light);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        .card-header svg {
+            width: 22px;
+            height: 22px;
+            color: var(--accent-blue);
+        }
+
+        .card-header h2 {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--text-dark);
+        }
+
+        /* Form Controls */
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: #334155;
+            margin-bottom: 8px;
+        }
+
+        .input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .input-prefix {
+            position: absolute;
+            left: 14px;
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            font-weight: 500;
+        }
+
+        input[type="text"], select {
+            width: 100%;
+            padding: 12px 14px 12px 42px;
+            font-size: 1rem;
+            border: 1px solid var(--border-light);
+            border-radius: 8px;
+            background: #fff;
+            color: var(--text-dark);
+            outline: none;
+            transition: all 0.2s ease;
+        }
+
+        input[type="text"]:focus, select:focus {
+            border-color: var(--accent-blue);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+        }
+
+        .hint {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            margin-top: 6px;
+        }
+
+        /* Recommendation Box */
+        .rec-box {
+            background-color: var(--bg-green);
+            border: 1px solid var(--border-green);
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .rec-tag {
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: var(--accent-green);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 6px;
+        }
+
+        .rec-title {
+            font-size: 1.35rem;
+            font-weight: 800;
+            color: #065f46;
+            margin-bottom: 6px;
+        }
+
+        .rec-desc {
+            font-size: 0.88rem;
+            color: #047857;
+            line-height: 1.4;
+        }
+
+        /* Metrics Table */
+        .metrics-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        .metrics-table th, .metrics-table td {
+            padding: 12px 8px;
+            text-align: left;
+            font-size: 0.9rem;
+            border-bottom: 1px solid var(--border-light);
+        }
+
+        .metrics-table th {
+            color: var(--text-muted);
+            font-weight: 600;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+        }
+
+        .metrics-table td.val {
+            text-align: right;
+            font-weight: 600;
+        }
+
+        .highlight-row {
+            background-color: var(--bg-slate);
+            font-weight: 700;
+        }
+
+        .tag-anexo {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 700;
+        }
+
+        .tag-anexo3 {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .tag-anexo5 {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        footer {
+            text-align: center;
+            padding: 24px;
+            color: #64748b;
+            font-size: 0.85rem;
+            border-top: 1px solid rgba(255,255,255,0.05);
+        }
+    </style>
+</head>
+<body oncontextmenu="return false;" onkeydown="return disableShortcuts(event);">
+
+    <header>
+        <span class="badge copyable">LC 123/2006 & Resolução CGSN Nº 140/2018</span>
+        <h1 class="copyable">Calculadora do Fator R</h1>
+        <p class="subtitle copyable">Planejamento Tributário Estratégico: Descubra se sua empresa pode migrar do Anexo V para o Anexo III e economizar impostos. O Fator R é a razão entre a folha de salários dos últimos 12 meses e a receita bruta do mesmo período. A partir de 28%, a empresa de serviços é tributada pelo Anexo III, tendo as alíquotas menores no cálculo mensal do DAS e abaixo do percentual citado, irá para o Anexo V, alíquotas maiores. Informe os dois valores e veja para qual anexo o perfil pende.</p>
+    </header>
+
+    <main>
+        <div class="grid-container">
+            <!-- Left Panel: Input Parameters -->
+            <div class="card">
+                <div class="card-header">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"></path>
+                    </svg>
+                    <h2>Parâmetros da Empresa (Últimos 12 meses)</h2>
+                </div>
+
+                <div class="form-group">
+                    <label for="rbt12">Receita Bruta Acumulada (RBT12)</label>
+                    <div class="input-wrapper">
+                        <span class="input-prefix">R$</span>
+                        <input type="text" id="rbt12" class="copyable" value="180.000,00" oninput="formatAndCalculate(this)">
+                    </div>
+                    <div class="hint">Faturamento total dos últimos 12 meses consecutivos.</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="folha12">Massa Salarial Acumulada (Folha 12)</label>
+                    <div class="input-wrapper">
+                        <span class="input-prefix">R$</span>
+                        <input type="text" id="folha12" class="copyable" value="50.400,00" oninput="formatAndCalculate(this)">
+                    </div>
+                    <div class="hint">Inclui salários, pró-labore e FGTS nos últimos 12 meses.</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="faturamentoMensal">Faturamento Médio Mensal Estimado</label>
+                    <div class="input-wrapper">
+                        <span class="input-prefix">R$</span>
+                        <input type="text" id="faturamentoMensal" class="copyable" value="15.000,00" oninput="formatAndCalculate(this)">
+                    </div>
+                    <div class="hint">Base para o cálculo do DAS mensal projetado.</div>
+                </div>
+            </div>
+
+            <!-- Right Panel: Results and Diagnostics -->
+            <div class="card">
+                <div class="card-header">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                    </svg>
+                    <h2>Diagnóstico e Comparativo Tributário</h2>
+                </div>
+
+                <!-- Dynamic Recommendation Banner -->
+                <div class="rec-box" id="recBox">
+                    <div class="rec-tag">RECOMENDAÇÃO TRIBUTÁRIA</div>
+                    <div class="rec-title copyable" id="recTitle">Elegível ao Anexo III</div>
+                    <div class="rec-desc copyable" id="recDesc">Seu Fator R é de <strong>28,00%</strong> (mínimo necessário: 28,00%). Sua tributação iniciará em 6,00% no Anexo III.</div>
+                </div>
+
+                <!-- Detailed Metrics Table -->
+                <table class="metrics-table">
+                    <thead>
+                        <tr>
+                            <th>Métrica</th>
+                            <th style="text-align: right;">Resultado</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Fator R Atingido</td>
+                            <td class="val copyable" id="resFatorR">28,00%</td>
+                        </tr>
+                        <tr>
+                            <td>Enquadramento Tributário</td>
+                            <td class="val copyable" id="resEnquadramento"><span class="tag-anexo tag-anexo3">Anexo III</span></td>
+                        </tr>
+                        <tr>
+                            <td>Alíquota Efetiva Estimada</td>
+                            <td class="val copyable" id="resAliquota">6,00%</td>
+                        </tr>
+                        <tr class="highlight-row">
+                            <td>Imposto Mensal Estimado (DAS)</td>
+                            <td class="val copyable" id="resDas" style="color: var(--accent-green);">R$ 900,00</td>
+                        </tr>
+                        <tr>
+                            <td>Imposto Mensal no Anexo V (Sem Fator R)</td>
+                            <td class="val copyable" id="resDasAnexo5" style="color: #b91c1c;">R$ 2.325,00</td>
+                        </tr>
+                        <tr class="highlight-row">
+                            <td>Economia Mensal Estimada</td>
+                            <td class="val copyable" id="resEconomia" style="color: var(--accent-green); font-weight: 800;">R$ 1.425,00</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p class="copyable">&copy; 2026 Simulador Fator R — Repositório `fator-r`. Desenvolvido para Análise de Planejamento Fiscal.</p>
+    </footer>
+
+    <!-- Anti-Copy & Anti-Source Protections -->
+    <script>
+        // Disable Developer Shortcuts (F12, Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+U, Ctrl+S)
+        function disableShortcuts(e) {
+            if (e.keyCode === 123) return false; // F12
+            if (e.ctrlKey && e.shiftKey && (e.keyCode === 73 || e.keyCode === 74 || e.keyCode === 67)) return false; // Ctrl+Shift+I/J/C
+            if (e.ctrlKey && (e.keyCode === 85 || e.keyCode === 83)) return false; // Ctrl+U / Ctrl+S
+        }
+
+        // Parse currency string to float
+        function parseCurrency(value) {
+            if (!value) return 0;
+            return parseFloat(value.replace(/\./g, '').replace(',', '.')) || 0;
+        }
+
+        // Format float to Brazilian Currency (pt-BR)
+        function formatCurrency(value) {
+            return value.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+        }
+
+        // Input formatter & dynamic calculator
+        function formatAndCalculate(input) {
+            let val = input.value.replace(/\D/g, '');
+            if (val === '') val = '0';
+            let floatVal = parseFloat(val) / 100;
+            input.value = formatCurrency(floatVal);
+            calculate();
+        }
+
+        // Calculate Fator R and Tax Comparison
+        function calculate() {
+            const rbt12 = parseCurrency(document.getElementById('rbt12').value);
+            const folha12 = parseCurrency(document.getElementById('folha12').value);
+            const faturamentoMensal = parseCurrency(document.getElementById('faturamentoMensal').value);
+
+            let fatorR = 0;
+            if (rbt12 > 0) {
+                fatorR = (folha12 / rbt12) * 100;
+            }
+
+            const resFatorR = document.getElementById('resFatorR');
+            const resEnquadramento = document.getElementById('resEnquadramento');
+            const resAliquota = document.getElementById('resAliquota');
+            const resDas = document.getElementById('resDas');
+            const resDasAnexo5 = document.getElementById('resDasAnexo5');
+            const resEconomia = document.getElementById('resEconomia');
+            const recBox = document.getElementById('recBox');
+            const recTitle = document.getElementById('recTitle');
+            const recDesc = document.getElementById('recDesc');
+
+            resFatorR.innerText = fatorR.toFixed(2).replace('.', ',') + '%';
+
+            // Base rate approximation for Anexo V (First band starts at 15.5%)
+            let aliq5 = 0.155;
+            let das5 = faturamentoMensal * aliq5;
+            resDasAnexo5.innerText = 'R$ ' + formatCurrency(das5);
+
+            if (fatorR >= 28.0) {
+                // Eligible for Anexo III
+                let aliq3 = 0.06; // Base rate for first band
+                let das3 = faturamentoMensal * aliq3;
+                let economia = das5 - das3;
+
+                resEnquadramento.innerHTML = '<span class="tag-anexo tag-anexo3">Anexo III</span>';
+                resAliquota.innerText = '6,00% (Anexo III)';
+                resDas.innerText = 'R$ ' + formatCurrency(das3);
+                resDas.style.color = 'var(--accent-green)';
+                resEconomia.innerText = 'R$ ' + formatCurrency(economia);
+
+                recBox.style.backgroundColor = 'var(--bg-green)';
+                recBox.style.borderColor = 'var(--border-green)';
+                recTitle.innerText = 'Elegível ao Anexo III';
+                recTitle.style.color = '#065f46';
+                recDesc.innerHTML = 'Seu Fator R é de <strong>' + fatorR.toFixed(2).replace('.', ',') + '%</strong> (&ge; 28,00%). Sua empresa se enquadra na menor alíquota do Simples Nacional.';
+                recDesc.style.color = '#047857';
+            } else {
+                // Remains in Anexo V
+                let das3 = das5; 
+                let proLaboreNecessario = (rbt12 * 0.28) - folha12;
+                if (proLaboreNecessario < 0) proLaboreNecessario = 0;
+
+                resEnquadramento.innerHTML = '<span class="tag-anexo tag-anexo5">Anexo V</span>';
+                resAliquota.innerText = '15,50% (Anexo V)';
+                resDas.innerText = 'R$ ' + formatCurrency(das5);
+                resDas.style.color = '#b91c1c';
+                resEconomia.innerText = 'R$ 0,00';
+
+                recBox.style.backgroundColor = '#fef2f2';
+                recBox.style.borderColor = '#fca5a5';
+                recTitle.innerText = 'Permanece no Anexo V';
+                recTitle.style.color = '#991b1b';
+                recDesc.innerHTML = 'Seu Fator R é de <strong>' + fatorR.toFixed(2).replace('.', ',') + '%</strong> (< 28,00%). Para migrar para o Anexo III, aumente a folha/pró-labore acumulado em <strong>R$ ' + formatCurrency(proLaboreNecessario) + '</strong> nos últimos 12 meses.';
+                recDesc.style.color = '#b91c1c';
+            }
+        }
+
+        // Initialize calculation on page load
+        window.onload = function() {
+            calculate();
+        };
+    </script>
+</body>
+</html>
