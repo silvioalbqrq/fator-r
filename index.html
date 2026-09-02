@@ -333,7 +333,7 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="recSemIss">Receita do Mês SEM Retenção de ISS (RPAr / FSPA)</label>
+                    <label for="recSemIss">Receita do Mês SEM Retenção de ISS (RPAr)</label>
                     <div class="input-wrapper">
                         <span class="input-prefix">R$</span>
                         <input type="text" id="recSemIss" class="copyable" value="15.000,00" oninput="formatAndCalculate(this)">
@@ -355,7 +355,7 @@
                     <label for="fspa">Folha de Pagamento do Mês Atual (FSPA)</label>
                     <div class="input-wrapper">
                         <span class="input-prefix">R$</span>
-                        <input type="text" id="fspa" class="copyable" value="4.200,00" oninput="formatAndCalculate(this)">
+                        <input type="text" id="fspa" class="copyable" value="0,00" oninput="formatAndCalculate(this)">
                     </div>
                     <div class="hint">Massa salarial e pró-labore do mês de apuração (Art. 26, § 6º).</div>
                 </div>
@@ -644,14 +644,28 @@
                 recDesc.style.color = '#047857';
             } else {
                 document.getElementById('resEnquadramento').innerHTML = '<span class="tag-anexo tag-anexo5">Anexo V</span>';
-                let proLaboreNecessario = (rbt12Calc * 0.28) - folha12Calc;
-                if (proLaboreNecessario < 0) proLaboreNecessario = 0;
+                
+                // Correção do Cálculo da Dica de Pró-Labore Necessário
+                let necessarios = 0;
+                if (tipo === 'inicio') {
+                    necessarios = (rpar * 0.28) - parseCurrency(document.getElementById('fspa').value);
+                } else if (tipo === 'proporcional') {
+                    let meses = parseInt(document.getElementById('mesesAtividade').value) || 1;
+                    let somaRec = parseCurrency(document.getElementById('rbt12').value);
+                    let somaFolha = parseCurrency(document.getElementById('folha12').value);
+                    necessarios = (somaRec * 0.28) - somaFolha;
+                } else {
+                    necessarios = (rbt12Calc * 0.28) - folha12Calc;
+                }
+                if (necessarios < 0) necessarios = 0;
 
                 recBox.style.backgroundColor = '#fef2f2';
                 recBox.style.borderColor = '#fca5a5';
                 recTitle.innerText = 'Tributado no Anexo V';
                 recTitle.style.color = '#991b1b';
-                recDesc.innerHTML = 'Fator R de <strong>' + fatorR.toFixed(2).replace('.', ',') + '%</strong> (< 28,00%). Para migrar ao Anexo III, aumente a folha/pró-labore em <strong>R$ ' + formatCurrency(proLaboreNecessario) + '</strong> no período acumulado.';
+                
+                let termoPeriodo = (tipo === 'inicio') ? 'no próprio mês' : 'no período acumulado';
+                recDesc.innerHTML = 'Fator R de <strong>' + fatorR.toFixed(2).replace('.', ',') + '%</strong> (< 28,00%). Para migrar ao Anexo III, aumente a folha/pró-labore em <strong>R$ ' + formatCurrency(necessarios) + '</strong> ' + termoPeriodo + '.';
                 recDesc.style.color = '#b91c1c';
             }
         }
