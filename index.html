@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Calculadora Fator R - Simples Nacional | Anexo III vs Anexo V</title>
-    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -36,7 +35,7 @@
             user-select: none;
         }
 
-        .copyable, .copyable * {
+        .copyable, .copyable *, .aviso, .aviso * {
             -webkit-user-select: text !important;
             -moz-user-select: text !important;
             -ms-user-select: text !important;
@@ -184,11 +183,75 @@
             box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
         }
 
+        input.input-invalid {
+            border-color: #dc2626;
+            box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.12);
+        }
+
         .hint {
             font-size: 0.78rem;
             color: var(--text-muted);
             margin-top: 6px;
+            line-height: 1.4;
         }
+
+        .avisos {
+            margin-bottom: 24px;
+        }
+
+        .aviso {
+            display: flex;
+            gap: 10px;
+            align-items: flex-start;
+            padding: 12px 14px;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            line-height: 1.45;
+            margin-bottom: 10px;
+            border: 1px solid;
+        }
+
+        .aviso:last-child {
+            margin-bottom: 0;
+        }
+
+        .aviso .icone {
+            font-weight: 800;
+            flex-shrink: 0;
+            line-height: 1.2;
+        }
+
+        .aviso-error {
+            background: #fef2f2;
+            border-color: #fca5a5;
+            color: #991b1b;
+        }
+
+        .aviso-error .icone { color: #dc2626; }
+
+        .aviso-warn {
+            background: #fffbeb;
+            border-color: #fcd34d;
+            color: #92400e;
+        }
+
+        .aviso-warn .icone { color: #d97706; }
+
+        .aviso-info {
+            background: #eff6ff;
+            border-color: #bfdbfe;
+            color: #1e40af;
+        }
+
+        .aviso-info .icone { color: #2563eb; }
+
+        .aviso-ok {
+            background: var(--bg-green);
+            border-color: var(--border-green);
+            color: #065f46;
+        }
+
+        .aviso-ok .icone { color: var(--accent-green); }
 
         .rec-box {
             background-color: var(--bg-green);
@@ -276,6 +339,20 @@
             font-size: 0.85rem;
             border-top: 1px solid rgba(255,255,255,0.05);
         }
+
+        footer .status {
+            display: inline-block;
+            margin-top: 8px;
+            padding: 4px 12px;
+            border-radius: 16px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            background: rgba(255,255,255,0.08);
+            color: #94a3b8;
+        }
+
+        footer .status.ok { color: #6ee7b7; }
+        footer .status.fail { color: #f87171; }
     </style>
 </head>
 <body oncontextmenu="return false;" onkeydown="return disableShortcuts(event);">
@@ -283,12 +360,11 @@
     <header>
         <span class="badge copyable">LC 123/2006 & Resolução CGSN Nº 140/2018 (Art. 26 e Art. 22)</span>
         <h1 class="copyable">Calculadora do Fator R & DAS Oficial</h1>
-        <p class="subtitle copyable">Planejamento Tributário Estratégico: Descubra se sua empresa pode migrar do Anexo V para o Anexo III e calcule a Alíquota Efetiva e o valor exato do DAS com separação de retenção de ISS conforme a tabela oficial. O Fator R é a razão entre a folha de salários dos últimos 12 meses e a receita bruta do mesmo período. A partir de 28%, a empresa de serviços é tributada pelo Anexo III, tendo as alíquotas menores no cálculo mensal do DAS e abaixo do percentual citado, irá para o Anexo V, alíquotas maiores. Informe os dois valores e veja para qual anexo o perfil pende.</p>
+        <p class="subtitle copyable">Planejamento Tributário Estratégico: Descubra se sua empresa pode migrar do Anexo V para o Anexo III e calcule a Alíquota Efetiva e o valor exato do DAS com separação de retenção de ISS conforme a tabela oficial. O Fator R é a razão entre a folha de salários dos últimos 12 meses e a receita bruta do mesmo período. A partir de 28%, a empresa de serviços é tributada pelo Anexo III; abaixo, pelo Anexo V. A ferramenta valida limites do Simples Nacional, dados zerados e campos inconsistentes.</p>
     </header>
 
     <main>
         <div class="grid-container">
-            <!-- Left Panel: Input Parameters -->
             <div class="card">
                 <div class="card-header">
                     <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -307,10 +383,9 @@
                     <div class="hint">Define a regra do Fator R (Art. 26) e proporção de RBT12/Folha12 (Art. 22 da Resolução CGSN nº 140/2018).</div>
                 </div>
 
-                <!-- Campo para meses de atividade quando proporcional -->
                 <div class="form-group" id="groupMeses" style="display: none;">
                     <label for="mesesAtividade">Meses em Atividade (de 2 a 12 meses)</label>
-                    <input type="text" id="mesesAtividade" class="copyable" value="6" oninput="calculate()">
+                    <input type="text" id="mesesAtividade" class="copyable" value="6" oninput="validateMeses(this); calculate();">
                     <div class="hint">Usado para proporcionalizar RBT12 = (Soma das receitas acumuladas / meses) * 12.</div>
                 </div>
 
@@ -350,7 +425,6 @@
                     <div class="hint">Serviços tributados com retenção de ISS no PA atual.</div>
                 </div>
 
-                <!-- Campo para Folha do Próprio Mês no Início de Atividade -->
                 <div class="form-group" id="groupFspa" style="display: none;">
                     <label for="fspa">Folha de Pagamento do Mês Atual (FSPA)</label>
                     <div class="input-wrapper">
@@ -361,7 +435,6 @@
                 </div>
             </div>
 
-            <!-- Right Panel: Results and Diagnostics -->
             <div class="card">
                 <div class="card-header">
                     <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -370,10 +443,12 @@
                     <h2>Diagnóstico e Cálculo do DAS Oficial</h2>
                 </div>
 
+                <div class="avisos" id="avisos"></div>
+
                 <div class="rec-box" id="recBox">
                     <div class="rec-tag">RECOMENDAÇÃO TRIBUTÁRIA</div>
-                    <div class="rec-title copyable" id="recTitle">Tributado no Anexo III</div>
-                    <div class="rec-desc copyable" id="recDesc">Fator R atinge o mínimo legal de 28,00%.</div>
+                    <div class="rec-title copyable" id="recTitle">Calculando…</div>
+                    <div class="rec-desc copyable" id="recDesc"></div>
                 </div>
 
                 <table class="metrics-table">
@@ -386,43 +461,43 @@
                     <tbody>
                         <tr>
                             <td>Regra do Fator R Aplicada</td>
-                            <td class="val copyable" id="resRegra">Art. 26, Caput</td>
+                            <td class="val copyable" id="resRegra">—</td>
                         </tr>
                         <tr>
                             <td>Fator R Atingido</td>
-                            <td class="val copyable" id="resFatorR">28,54%</td>
+                            <td class="val copyable" id="resFatorR">—</td>
                         </tr>
                         <tr>
                             <td>Enquadramento Tributário</td>
-                            <td class="val copyable" id="resEnquadramento"><span class="tag-anexo tag-anexo3">Anexo III</span></td>
+                            <td class="val copyable" id="resEnquadramento">—</td>
                         </tr>
                         <tr>
                             <td>Faixa do Simples Nacional</td>
-                            <td class="val copyable" id="resFaixa">2ª Faixa</td>
+                            <td class="val copyable" id="resFaixa">—</td>
                         </tr>
                         <tr>
                             <td>Alíquota Efetiva Base</td>
-                            <td class="val copyable" id="resAliqEfetiva">7,09088%</td>
+                            <td class="val copyable" id="resAliqEfetiva">—</td>
                         </tr>
                         <tr>
                             <td>Alíquota Efetiva (COM Retenção ISS)</td>
-                            <td class="val copyable" id="resAliqComIss">4,82180%</td>
+                            <td class="val copyable" id="resAliqComIss">—</td>
                         </tr>
                         <tr>
                             <td>Imposto Receita Sem Retenção</td>
-                            <td class="val copyable" id="resImpostoSemIss">R$ 1.063,63</td>
+                            <td class="val copyable" id="resImpostoSemIss">—</td>
                         </tr>
                         <tr>
                             <td>Imposto Receita Com Retenção</td>
-                            <td class="val copyable" id="resImpostoComIss">R$ 0,00</td>
+                            <td class="val copyable" id="resImpostoComIss">—</td>
                         </tr>
                         <tr class="highlight-row">
                             <td>VALOR TOTAL DO DAS</td>
-                            <td class="val copyable" id="resTotalDas" style="color: var(--accent-green); font-size: 1.05rem;">R$ 1.063,63</td>
+                            <td class="val copyable" id="resTotalDas" style="color: var(--accent-green); font-size: 1.05rem;">—</td>
                         </tr>
                         <tr class="highlight-row">
                             <td>Economia Estimada vs Anexo V</td>
-                            <td class="val copyable" id="resEconomia" style="color: var(--accent-green); font-weight: 800;">R$ 1.223,87</td>
+                            <td class="val copyable" id="resEconomia" style="color: var(--accent-green); font-weight: 800;">—</td>
                         </tr>
                     </tbody>
                 </table>
@@ -431,10 +506,13 @@
     </main>
 
     <footer>
-        <p class="copyable">&copy; 2026 Simulador Fator R & DAS Oficial — Repositório `fator-r` (Atualizado com regras do Art. 26 da Resolução CGSN nº 140/2018).</p>
+        <p class="copyable">&copy; 2026 Simulador Fator R & DAS Oficial - Repositório `fator-r` (Atualizado com regras do Art. 26 da Resolução CGSN nº 140/2018).</p>
+        <span class="status" id="selfTestStatus">Verificando autoteste…</span>
     </footer>
 
     <script>
+        const LIMITE_SIMPLES = 4800000.00;
+
         function disableShortcuts(e) {
             if (e.keyCode === 123) return false;
             if (e.ctrlKey && e.shiftKey && (e.keyCode === 73 || e.keyCode === 74 || e.keyCode === 67)) return false;
@@ -443,7 +521,9 @@
 
         function parseCurrency(value) {
             if (!value) return 0;
-            return parseFloat(value.replace(/\./g, '').replace(',', '.')) || 0;
+            const limpo = value.replace(/\s/g, '');
+            if (/^-?\d+(\.\d+)?$/.test(limpo)) return parseFloat(limpo) || 0;
+            return parseFloat(limpo.replace(/\./g, '').replace(',', '.')) || 0;
         }
 
         function formatCurrency(value) {
@@ -453,9 +533,76 @@
         function formatAndCalculate(input) {
             let val = input.value.replace(/\D/g, '');
             if (val === '') val = '0';
-            let floatVal = parseFloat(val) / 100;
-            input.value = formatCurrency(floatVal);
+            input.value = formatCurrency(parseFloat(val) / 100);
             calculate();
+        }
+
+        function validateMeses(input) {
+            const v = parseInt(input.value.replace(/\D/g, ''), 10);
+            if (v >= 2 && v <= 12) {
+                input.classList.remove('input-invalid');
+            } else {
+                input.classList.add('input-invalid');
+            }
+        }
+
+        const anexo3 = [
+            { faixa: 1, ate: 180000.00, aliq: 0.0600, deducao: 0, issPerc: 0.3350 },
+            { faixa: 2, ate: 360000.00, aliq: 0.1120, deducao: 9360.00, issPerc: 0.3200 },
+            { faixa: 3, ate: 720000.00, aliq: 0.1350, deducao: 17640.00, issPerc: 0.3250 },
+            { faixa: 4, ate: 1800000.00, aliq: 0.1600, deducao: 35640.00, issPerc: 0.3250 },
+            { faixa: 5, ate: 3600000.00, aliq: 0.2100, deducao: 125640.00, issPerc: 0.3350 },
+            { faixa: 6, ate: 4800000.00, aliq: 0.3300, deducao: 648000.00, issPerc: 0.0000 }
+        ];
+
+        const anexo5 = [
+            { faixa: 1, ate: 180000.00, aliq: 0.1550, deducao: 0, issPerc: 0.1400 },
+            { faixa: 2, ate: 360000.00, aliq: 0.1800, deducao: 4500.00, issPerc: 0.1700 },
+            { faixa: 3, ate: 720000.00, aliq: 0.1950, deducao: 9900.00, issPerc: 0.1900 },
+            { faixa: 4, ate: 1800000.00, aliq: 0.2050, deducao: 17100.00, issPerc: 0.2100 },
+            { faixa: 5, ate: 3600000.00, aliq: 0.2300, deducao: 62100.00, issPerc: 0.2350 },
+            { faixa: 6, ate: 4800000.00, aliq: 0.3050, deducao: 540000.00, issPerc: 0.0000 }
+        ];
+
+        function getAnexoData(tabela, rbt12) {
+            for (let linha of tabela) {
+                if (rbt12 <= linha.ate) return linha;
+            }
+            return tabela[tabela.length - 1];
+        }
+
+        function getFaixa(tabela, rbt12) {
+            return getAnexoData(tabela, rbt12).faixa;
+        }
+
+        function calcularAliquotaEfetiva(tabela, rbt12) {
+            const linha = getAnexoData(tabela, rbt12);
+            if (rbt12 > 0) {
+                const efetiva = ((rbt12 * linha.aliq) - linha.deducao) / rbt12;
+                return Math.max(efetiva, 0);
+            }
+            return linha.aliq;
+        }
+
+        function fatorRNormal(rbt12, folha12) {
+            if (folha12 === 0 && rbt12 === 0) return 1;
+            if (folha12 > 0 && rbt12 === 0) return 28;
+            if (folha12 > 0 && rbt12 > 0) return (folha12 / rbt12) * 100;
+            return 1;
+        }
+
+        function fatorRProporcional(somaRec, somaFolha) {
+            if (somaFolha === 0 && somaRec === 0) return 1;
+            if (somaFolha > 0 && somaRec === 0) return 28;
+            if (somaFolha > 0 && somaRec > 0) return (somaFolha / somaRec) * 100;
+            return 1;
+        }
+
+        function fatorRInicio(fspa, rpar) {
+            if (fspa > 0 && rpar === 0) return 28;
+            if (fspa === 0 && rpar > 0) return 1;
+            if (fspa > 0 && rpar > 0) return (fspa / rpar) * 100;
+            return 1;
         }
 
         function toggleCamposEspeciais() {
@@ -464,6 +611,10 @@
             const groupRbt12 = document.getElementById('groupRbt12');
             const groupFolha12 = document.getElementById('groupFolha12');
             const groupFspa = document.getElementById('groupFspa');
+            const labelRbt12 = document.getElementById('labelRbt12');
+            const hintRbt12 = document.getElementById('hintRbt12');
+            const labelFolha12 = document.getElementById('labelFolha12');
+            const hintFolha12 = document.getElementById('hintFolha12');
 
             if (tipo === 'inicio') {
                 groupMeses.style.display = 'none';
@@ -475,52 +626,56 @@
                 groupRbt12.style.display = 'block';
                 groupFolha12.style.display = 'block';
                 groupFspa.style.display = 'none';
-                document.getElementById('labelRbt12').innerText = 'Soma das Receitas Acumuladas nos Meses Anteriores';
-                document.getElementById('hintRbt12').innerText = 'Soma do faturamento bruto dos meses em atividade antes do PA atual.';
-                document.getElementById('labelFolha12').innerText = 'Soma das Folhas Acumuladas nos Meses Anteriores';
-                document.getElementById('hintFolha12').innerText = 'Soma da massa salarial/pró-labore dos meses em atividade antes do PA atual.';
+                labelRbt12.innerText = 'Soma das Receitas Acumuladas nos Meses Anteriores';
+                hintRbt12.innerText = 'Soma do faturamento bruto dos meses em atividade antes do PA atual.';
+                labelFolha12.innerText = 'Soma das Folhas Acumuladas nos Meses Anteriores';
+                hintFolha12.innerText = 'Soma da massa salarial/pró-labore dos meses em atividade antes do PA atual.';
             } else {
                 groupMeses.style.display = 'none';
                 groupRbt12.style.display = 'block';
                 groupFolha12.style.display = 'block';
                 groupFspa.style.display = 'none';
-                document.getElementById('labelRbt12').innerText = 'Receita Bruta Acumulada (RBT12 / RBT12r)';
-                document.getElementById('hintRbt12').innerText = 'Faturamento bruto dos últimos 12 meses anteriores ao PA.';
-                document.getElementById('labelFolha12').innerText = 'Folha de Pagamento Acumulada (Folha 12 / FS12)';
-                document.getElementById('hintFolha12').innerText = 'Salários, pró-labore e FGTS nos últimos 12 meses anteriores ao PA.';
+                labelRbt12.innerText = 'Receita Bruta Acumulada (RBT12 / RBT12r)';
+                hintRbt12.innerText = 'Faturamento bruto dos últimos 12 meses anteriores ao PA.';
+                labelFolha12.innerText = 'Folha de Pagamento Acumulada (Folha 12 / FS12)';
+                hintFolha12.innerText = 'Salários, pró-labore e FGTS nos últimos 12 meses anteriores ao PA.';
             }
             calculate();
         }
 
-        // Official Annex III Table (LC 123/2006)
-        const anexo3 = [
-            { faixa: 1, ate: 180000.00, aliq: 0.0600, deducao: 0, issPerc: 0.3350 },
-            { faixa: 2, ate: 360000.00, aliq: 0.1120, deducao: 9360.00, issPerc: 0.3200 },
-            { faixa: 3, ate: 720000.00, aliq: 0.1350, deducao: 17640.00, issPerc: 0.3250 },
-            { faixa: 4, ate: 1800000.00, aliq: 0.1600, deducao: 35640.00, issPerc: 0.3250 },
-            { faixa: 5, ate: 3600000.00, aliq: 0.2100, deducao: 125640.00, issPerc: 0.3350 },
-            { faixa: 6, ate: 4800000.00, aliq: 0.3300, deducao: 648000.00, issPerc: 0.0000 }
-        ];
+        function calcularDas(recSemIss, recComIss, aliqEfetiva, linha) {
+            const aliqComIss = aliqEfetiva * (1 - linha.issPerc);
+            const impostoSemIss = recSemIss * aliqEfetiva;
+            const impostoComIss = recComIss * aliqComIss;
+            return {
+                aliqComIss: aliqComIss,
+                impostoSemIss: impostoSemIss,
+                impostoComIss: impostoComIss,
+                total: impostoSemIss + impostoComIss
+            };
+        }
 
-        // Official Annex V Table (LC 123/2006)
-        const anexo5 = [
-            { faixa: 1, ate: 180000.00, aliq: 0.1550, deducao: 0, issPerc: 0.1400 },
-            { faixa: 2, ate: 360000.00, aliq: 0.1800, deducao: 4500.00, issPerc: 0.1700 },
-            { faixa: 3, ate: 720000.00, aliq: 0.1950, deducao: 9900.00, issPerc: 0.1900 },
-            { faixa: 4, ate: 1800000.00, aliq: 0.2050, deducao: 17100.00, issPerc: 0.2100 },
-            { faixa: 5, ate: 3600000.00, aliq: 0.2300, deducao: 62100.00, issPerc: 0.2350 },
-            { faixa: 6, ate: 4800000.00, aliq: 0.3050, deducao: 540000.00, issPerc: 0.0000 }
-        ];
-
-        function getAnexoData(table, rbt12) {
-            for (let row of table) {
-                if (rbt12 <= row.ate) return row;
+        function calcularProLaboreNecessario(tipo, rbt12Calc, folha12Calc) {
+            if (tipo === 'inicio') {
+                const fspa = parseCurrency(document.getElementById('fspa').value);
+                const rpar = parseCurrency(document.getElementById('recSemIss').value) + parseCurrency(document.getElementById('recComIss').value);
+                return (rpar * 0.28) - fspa;
             }
-            return table[table.length - 1];
+            if (tipo === 'proporcional') {
+                let meses = parseInt(document.getElementById('mesesAtividade').value.replace(/\D/g, ''), 10) || 1;
+                if (meses < 1) meses = 1;
+                if (meses > 12) meses = 12;
+                const somaRec = parseCurrency(document.getElementById('rbt12').value);
+                const somaFolha = parseCurrency(document.getElementById('folha12').value);
+                return (somaRec * 0.28) - somaFolha;
+            }
+            return (rbt12Calc * 0.28) - folha12Calc;
         }
 
         function calculate() {
             const tipo = document.getElementById('tipoEmpresa').value;
+            const avisos = [];
+
             const recSemIss = parseCurrency(document.getElementById('recSemIss').value);
             const recComIss = parseCurrency(document.getElementById('recComIss').value);
             const rpar = recSemIss + recComIss;
@@ -529,106 +684,90 @@
             let folha12Calc = 0;
             let fatorR = 0;
             let regraAplicada = "";
+            let meses = 0;
 
             if (tipo === 'inicio') {
-                // Art. 26, § 6º — Mês de Início de Atividades
                 regraAplicada = "Art. 26, § 6º (Mês de Início)";
                 const fspa = parseCurrency(document.getElementById('fspa').value);
-
-                if (fspa > 0 && rpar === 0) {
-                    fatorR = 28.00; // Art. 26, § 6º, I
-                } else if (fspa === 0 && rpar > 0) {
-                    fatorR = 1.00;  // Art. 26, § 6º, II (0,01 -> 1%)
-                } else if (fspa > 0 && rpar > 0) {
-                    fatorR = (fspa / rpar) * 100; // Art. 26, § 6º, III
-                } else {
-                    fatorR = 1.00;
-                }
-
-                // Anualização da receita do próprio mês para determinação da faixa de alíquota (Art. 22)
+                fatorR = fatorRInicio(fspa, rpar);
                 rbt12Calc = rpar * 12;
                 folha12Calc = fspa * 12;
 
+                if (fspa === 0) {
+                    avisos.push({ tipo: 'warn', msg: 'Folha do mês zerada (FSPA = R$ 0,00). O Fator R foi arbitrado em ' + fatorR.toFixed(2).replace('.', ',') + '% (regra do Art. 26, § 6º). Confira se a massa salarial do mês está preenchida.' });
+                }
             } else if (tipo === 'proporcional') {
-                // Art. 26, § 4º c/c Art. 22 — Menos de 13 meses de atividade
                 regraAplicada = "Art. 26, § 4º (Menos de 13 meses)";
-                let meses = parseInt(document.getElementById('mesesAtividade').value) || 1;
-                if (meses < 1) meses = 1;
+                meses = parseInt(document.getElementById('mesesAtividade').value.replace(/\D/g, ''), 10) || 0;
+                if (meses < 2) meses = 2;
                 if (meses > 12) meses = 12;
 
-                const somaRecAnteriores = parseCurrency(document.getElementById('rbt12').value);
-                const somaFolhaAnteriores = parseCurrency(document.getElementById('folha12').value);
+                const somaRec = parseCurrency(document.getElementById('rbt12').value);
+                const somaFolha = parseCurrency(document.getElementById('folha12').value);
 
-                rbt12Calc = (somaRecAnteriores / meses) * 12;
-                folha12Calc = (somaFolhaAnteriores / meses) * 12;
+                rbt12Calc = (somaRec / meses) * 12;
+                folha12Calc = (somaFolha / meses) * 12;
+                fatorR = fatorRProporcional(somaRec, somaFolha);
 
-                if (somaFolhaAnteriores === 0 && somaRecAnteriores === 0) {
-                    fatorR = 1.00; // Art. 26, § 7º, I
-                } else if (somaFolhaAnteriores > 0 && somaRecAnteriores === 0) {
-                    fatorR = 28.00; // Art. 26, § 7º, II
-                } else if (somaFolhaAnteriores > 0 && somaRecAnteriores > 0) {
-                    fatorR = (folha12Calc / rbt12Calc) * 100; // Art. 26, § 7º, III
-                } else {
-                    fatorR = 1.00; // Art. 26, § 7º, IV
+                const mesesDigitado = parseInt(document.getElementById('mesesAtividade').value.replace(/\D/g, ''), 10) || 0;
+                if (mesesDigitado < 2 || mesesDigitado > 12) {
+                    avisos.push({ tipo: 'error', msg: 'Meses em atividade fora do intervalo válido (2 a 12). Valor utilizado: ' + meses + ' meses. Ajuste o campo para evitar projeção incorreta.' });
                 }
-
+                if (somaRec === 0) {
+                    avisos.push({ tipo: 'warn', msg: 'Soma das receitas anterior zerada. O Fator R foi arbitrado em ' + fatorR.toFixed(2).replace('.', ',') + '% (Art. 26, § 7º). Confira os dados.' });
+                }
+                if (somaFolha === 0) {
+                    avisos.push({ tipo: 'warn', msg: 'Soma das folhas anterior zerada. Enquadramento volta ao piso (1,00%). Confira se a massa salarial está completa.' });
+                }
             } else {
-                // Art. 26, Caput — 13 meses ou mais em atividade
                 regraAplicada = "Art. 26, Caput (Regra Geral)";
                 rbt12Calc = parseCurrency(document.getElementById('rbt12').value);
                 folha12Calc = parseCurrency(document.getElementById('folha12').value);
+                fatorR = fatorRNormal(rbt12Calc, folha12Calc);
 
-                if (folha12Calc === 0 && rbt12Calc === 0) {
-                    fatorR = 1.00;
-                } else if (folha12Calc > 0 && rbt12Calc === 0) {
-                    fatorR = 28.00;
-                } else if (folha12Calc > 0 && rbt12Calc > 0) {
-                    fatorR = (folha12Calc / rbt12Calc) * 100;
-                } else {
-                    fatorR = 1.00;
+                if (rbt12Calc === 0) {
+                    avisos.push({ tipo: 'warn', msg: 'Receita Bruta (RBT12) zerada. O Fator R foi arbitrado em ' + fatorR.toFixed(2).replace('.', ',') + '% (Art. 26, § 7º). Confira os valores informados.' });
+                }
+                if (folha12Calc === 0) {
+                    avisos.push({ tipo: 'warn', msg: 'Folha de Pagamento (Folha 12) zerada. O Fator R foi arbitrado no piso (1,00%) e a tributação pende ao Anexo V. Verifique se a massa salarial do período está completa.' });
                 }
             }
 
-            const isAnexo3 = fatorR >= 28.00;
-            const currentTable = isAnexo3 ? anexo3 : anexo5;
-            const rowData = getAnexoData(currentTable, rbt12Calc);
-
-            // Alíquota Efetiva Base = [(RBT12 x Alíquota) - Deducao] / RBT12
-            let aliqEfetiva = 0;
-            if (rbt12Calc > 0) {
-                aliqEfetiva = ((rbt12Calc * rowData.aliq) - rowData.deducao) / rbt12Calc;
-            } else {
-                aliqEfetiva = rowData.aliq;
+            if (rbt12Calc > LIMITE_SIMPLES) {
+                avisos.push({ tipo: 'error', msg: 'RBT12 de R$ ' + formatCurrency(rbt12Calc) + ' ultrapassa o limite anual do Simples Nacional (R$ ' + formatCurrency(LIMITE_SIMPLES) + ', Art. 3º, II, LC 123/2006). Nessa condição a empresa não permanece no regime. O cálculo abaixo é exibido apenas como referência.' });
             }
-            if (aliqEfetiva < 0) aliqEfetiva = 0;
 
-            // Alíquota Efetiva com Retenção de ISS (Desconta a parcela do ISS)
-            let aliqComIss = aliqEfetiva * (1 - rowData.issPerc);
+            if (rpar === 0) {
+                avisos.push({ tipo: 'info', msg: 'Sem receita no mês de apuração (RPAr = R$ 0,00) - o valor do DAS será R$ 0,00 no período, independentemente do anexo.' });
+            }
 
-            // Imposto Mensal
-            let impostoSemIss = recSemIss * aliqEfetiva;
-            let impostoComIss = recComIss * aliqComIss;
-            let totalDas = impostoSemIss + impostoComIss;
+            const isAnexo3 = fatorR >= 28.00 - 1e-9;
+            const tabela = isAnexo3 ? anexo3 : anexo5;
+            const linha = getAnexoData(tabela, rbt12Calc);
+            const aliqEfetiva = calcularAliquotaEfetiva(tabela, rbt12Calc);
+            const das = calcularDas(recSemIss, recComIss, aliqEfetiva, linha);
 
-            // Comparativo Anexo V para calcular economia exata
-            const rowAnexo5 = getAnexoData(anexo5, rbt12Calc);
-            let aliqEfetivaA5 = rbt12Calc > 0 ? ((rbt12Calc * rowAnexo5.aliq) - rowAnexo5.deducao) / rbt12Calc : rowAnexo5.aliq;
-            let aliqComIssA5 = aliqEfetivaA5 * (1 - rowAnexo5.issPerc);
-            let totalDasAnexo5 = (recSemIss * aliqEfetivaA5) + (recComIss * aliqComIssA5);
+            let economia = 0;
+            let temComparativo = false;
+            if (isAnexo3) {
+                const linhaA5 = getAnexoData(anexo5, rbt12Calc);
+                const aliqA5 = calcularAliquotaEfetiva(anexo5, rbt12Calc);
+                const dasA5 = calcularDas(recSemIss, recComIss, aliqA5, linhaA5);
+                economia = Math.max(dasA5.total - das.total, 0);
+                temComparativo = true;
+            }
 
-            let economia = isAnexo3 ? (totalDasAnexo5 - totalDas) : 0;
-            if (economia < 0) economia = 0;
+            renderAvisos(avisos);
 
-            // Atualiza Interface
             document.getElementById('resRegra').innerText = regraAplicada;
             document.getElementById('resFatorR').innerText = fatorR.toFixed(2).replace('.', ',') + '%';
-            document.getElementById('resFaixa').innerText = rowData.faixa + 'ª Faixa (RBT12: R$ ' + formatCurrency(rbt12Calc) + ')';
+            document.getElementById('resFaixa').innerText = linha.faixa + 'ª Faixa (RBT12: R$ ' + formatCurrency(rbt12Calc) + ')';
             document.getElementById('resAliqEfetiva').innerText = (aliqEfetiva * 100).toFixed(5).replace('.', ',') + '%';
-            document.getElementById('resAliqComIss').innerText = (aliqComIss * 100).toFixed(5).replace('.', ',') + '%';
-            document.getElementById('resImpostoSemIss').innerText = 'R$ ' + formatCurrency(impostoSemIss);
-            document.getElementById('resImpostoComIss').innerText = 'R$ ' + formatCurrency(impostoComIss);
-            document.getElementById('resTotalDas').innerText = 'R$ ' + formatCurrency(totalDas);
-            document.getElementById('resEconomia').innerText = 'R$ ' + formatCurrency(economia);
+            document.getElementById('resAliqComIss').innerText = (das.aliqComIss * 100).toFixed(5).replace('.', ',') + '%';
+            document.getElementById('resImpostoSemIss').innerText = 'R$ ' + formatCurrency(das.impostoSemIss);
+            document.getElementById('resImpostoComIss').innerText = 'R$ ' + formatCurrency(das.impostoComIss);
+            document.getElementById('resTotalDas').innerText = 'R$ ' + formatCurrency(das.total);
+            document.getElementById('resEconomia').innerText = temComparativo ? 'R$ ' + formatCurrency(economia) : '—';
 
             const recBox = document.getElementById('recBox');
             const recTitle = document.getElementById('recTitle');
@@ -644,34 +783,74 @@
                 recDesc.style.color = '#047857';
             } else {
                 document.getElementById('resEnquadramento').innerHTML = '<span class="tag-anexo tag-anexo5">Anexo V</span>';
-                
-                // Correção do Cálculo da Dica de Pró-Labore Necessário
-                let necessarios = 0;
-                if (tipo === 'inicio') {
-                    necessarios = (rpar * 0.28) - parseCurrency(document.getElementById('fspa').value);
-                } else if (tipo === 'proporcional') {
-                    let meses = parseInt(document.getElementById('mesesAtividade').value) || 1;
-                    let somaRec = parseCurrency(document.getElementById('rbt12').value);
-                    let somaFolha = parseCurrency(document.getElementById('folha12').value);
-                    necessarios = (somaRec * 0.28) - somaFolha;
-                } else {
-                    necessarios = (rbt12Calc * 0.28) - folha12Calc;
-                }
-                if (necessarios < 0) necessarios = 0;
-
+                const necessarios = Math.max(calcularProLaboreNecessario(tipo, rbt12Calc, folha12Calc), 0);
                 recBox.style.backgroundColor = '#fef2f2';
                 recBox.style.borderColor = '#fca5a5';
                 recTitle.innerText = 'Tributado no Anexo V';
                 recTitle.style.color = '#991b1b';
-                
-                let termoPeriodo = (tipo === 'inicio') ? 'no próprio mês' : 'no período acumulado';
+                const termoPeriodo = (tipo === 'inicio') ? 'no próprio mês' : 'no período acumulado';
                 recDesc.innerHTML = 'Fator R de <strong>' + fatorR.toFixed(2).replace('.', ',') + '%</strong> (< 28,00%). Para migrar ao Anexo III, aumente a folha/pró-labore em <strong>R$ ' + formatCurrency(necessarios) + '</strong> ' + termoPeriodo + '.';
                 recDesc.style.color = '#b91c1c';
             }
         }
 
+        function renderAvisos(avisos) {
+            const container = document.getElementById('avisos');
+            if (avisos.length === 0) {
+                container.innerHTML = '<div class="aviso aviso-ok"><span class="icone">OK</span><span>Nenhum alerta: dados consistentes dentro dos limites do Simples Nacional.</span></div>';
+                return;
+            }
+            let html = '';
+            for (const aviso of avisos) {
+                const icone = aviso.tipo === 'error' ? 'X' : (aviso.tipo === 'warn' ? '!' : 'i');
+                html += '<div class="aviso aviso-' + aviso.tipo + '"><span class="icone">' + icone + '</span><span>' + aviso.msg + '</span></div>';
+            }
+            container.innerHTML = html;
+        }
+
+        function quase(a, b, tol) {
+            return Math.abs(a - b) <= tol;
+        }
+
+        function runSelfTests() {
+            const falhas = [];
+            const ok = (cond, nome) => { if (!cond) falhas.push(nome); };
+
+            ok(quase(fatorRNormal(227786, 65000), 28.5356, 0.01), 'Fator R - caso base');
+            ok(getFaixa(anexo3, 227786) === 2, 'Faixa - Anexo III caso base');
+            ok(quase(calcularAliquotaEfetiva(anexo3, 227786), 0.0709088, 0.000001), 'Alíquota efetiva - Anexo III caso base');
+            ok(quase(calcularAliquotaEfetiva(anexo5, 227786), 0.1602446, 0.000001), 'Alíquota efetiva - Anexo V caso base');
+
+            ok(quase(fatorRNormal(100000, 28000), 28, 1e-9), 'Fator R - limite exato 28%');
+            ok(fatorRNormal(100000, 27999) < 28, 'Fator R - abaixo de 28%');
+            ok(fatorRNormal(0, 0) === 1, 'Fator R - tudo zerado');
+
+            ok(fatorRProporcional(60000, 12000) === 20, 'Fator R - proporcional');
+            ok(fatorRInicio(1000, 2000) === 50, 'Fator R - mês de início');
+
+            ok(calcularAliquotaEfetiva(anexo3, 0) === 0.06, 'Alíquota efetiva - RBT12 zero');
+            ok(getFaixa(anexo3, 5000000) === 6, 'Faixa acima do teto usa última faixa');
+
+            const dasBase = calcularDas(15000, 0, calcularAliquotaEfetiva(anexo3, 227786), getAnexoData(anexo3, 227786));
+            ok(quase(dasBase.total, 1063.63, 0.02), 'DAS caso base');
+            const dasA5 = calcularDas(15000, 0, calcularAliquotaEfetiva(anexo5, 227786), getAnexoData(anexo5, 227786));
+            ok(quase(dasA5.total - dasBase.total, 1340.04, 0.02), 'Economia vs Anexo V caso base');
+
+            const status = document.getElementById('selfTestStatus');
+            if (falhas.length === 0) {
+                status.innerText = 'Autoverificação do cálculo aprovada';
+                status.classList.add('ok');
+                console.info('[fator-r] Autoteste: todos os cálculos validados.');
+            } else {
+                status.innerText = 'Autoverificação falhou: ' + falhas.join('; ');
+                status.classList.add('fail');
+                console.error('[fator-r] Autoteste falhou em: ', falhas);
+            }
+        }
+
         window.onload = function() {
             calculate();
+            runSelfTests();
         };
     </script>
 </body>
