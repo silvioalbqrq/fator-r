@@ -17,6 +17,9 @@ A ferramenta analisa a relação entre a massa salarial (folha de pagamento/pró
   - Alertas para valores zerados (RBT12, Folha 12, FSPA/RPAr) que acionam regras especiais, evitando que o enquadramento seja interpretado como cálculo "normal".
   - Consistência do campo **meses em atividade** (intervalo 2 a 12).
 - **Autoverificação interna:** ao carregar, um autoteste valida os cálculos-chave (Fator R, faixa, alíquota efetiva, DAS e economia vs Anexo V) e exibe o resultado no rodapé.
+- **Ações do relatório:**
+  - **Limpar valores:** zera todos os campos dos Parâmetros de Apuração Mensal e retorna a regra "normal" (13+ meses).
+  - **Imprimir relatório:** imprime os *Parâmetros de Apuração Mensal* e o *Diagnóstico e Cálculo do DAS Oficial* (os dois painéis), ocultando cabeçalho, rodapé e botões via folha de estilo de impressão dedicada.
 - **Formatação de Moeda Brasileira (pt-BR):** Máscara automática de entrada para valores monetários (`R$`).
 - **Proteção básica contra cópia do código-fonte:** bloqueio de atalhos de inspeção (`F12`, `Ctrl+U`, `Ctrl+S`, `Ctrl+Shift+I/J/C`) e do menu de contexto, além de `user-select: none` na página. O **conteúdo visível permanece selecionável e copiável** (resultados do DAS, dicas, avisos, textos e valores digitados) via classe `copyable`.
 - **Design System Moderno:** Layout responsivo baseado na paleta Slate/Dark Navy e Esmeralda.
