@@ -1,1016 +1,273 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calculadora Fator R - Simples Nacional | Anexo III vs Anexo V</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --bg-dark: #0f172a;
-            --bg-card: #ffffff;
-            --text-dark: #0f172a;
-            --text-muted: #64748b;
-            --accent-green: #059669;
-            --bg-green: #ecfdf5;
-            --border-green: #a7f3d0;
-            --accent-blue: #2563eb;
-            --bg-slate: #f8fafc;
-            --border-light: #e2e8f0;
-            --shadow-sm: 0 1px 3px rgba(0,0,0,0.1);
-            --shadow-lg: 0 10px 25px -5px rgba(0,0,0,0.05), 0 8px 10px -6px rgba(0,0,0,0.01);
-            --radius: 12px;
-        }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Inter', system-ui, -apple-system, sans-serif;
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
-            user-select: none;
-        }
-
-        .copyable, .copyable *, .aviso, .aviso * {
-            -webkit-user-select: text !important;
-            -moz-user-select: text !important;
-            -ms-user-select: text !important;
-            user-select: text !important;
-        }
-
-        body {
-            background-color: var(--bg-dark);
-            color: var(--text-dark);
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
-
-        header {
-            padding: 40px 20px 80px 20px;
-            text-align: center;
-            color: #ffffff;
-            max-width: 1000px;
-            margin: 0 auto;
-            width: 100%;
-        }
-
-        .badge {
-            display: inline-block;
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            padding: 6px 16px;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            font-weight: 500;
-            margin-bottom: 20px;
-            letter-spacing: 0.5px;
-        }
-
-        h1 {
-            font-size: 2.2rem;
-            font-weight: 800;
-            margin-bottom: 12px;
-            letter-spacing: -0.5px;
-        }
-
-        p.subtitle {
-            color: #94a3b8;
-            font-size: 1.05rem;
-            max-width: 880px;
-            margin: 0 auto;
-            line-height: 1.6;
-        }
-
-        main {
-            max-width: 1100px;
-            margin: -40px auto 40px auto;
-            padding: 0 20px;
-            width: 100%;
-            flex: 1;
-        }
-
-        .grid-container {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 24px;
-        }
-
-        @media (max-width: 868px) {
-            .grid-container {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        .card {
-            background: var(--bg-card);
-            border-radius: var(--radius);
-            padding: 28px;
-            box-shadow: var(--shadow-lg);
-            border: 1px solid var(--border-light);
-        }
-
-        .card-header {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-bottom: 24px;
-            padding-bottom: 16px;
-            border-bottom: 1px solid var(--border-light);
-        }
-
-        .card-header svg {
-            width: 22px;
-            height: 22px;
-            color: var(--accent-blue);
-        }
-
-        .card-header h2 {
-            font-size: 1.2rem;
-            font-weight: 700;
-            color: var(--text-dark);
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        label {
-            display: block;
-            font-size: 0.875rem;
-            font-weight: 600;
-            color: #334155;
-            margin-bottom: 8px;
-        }
-
-        .input-wrapper {
-            position: relative;
-            display: flex;
-            align-items: center;
-        }
-
-        .input-prefix {
-            position: absolute;
-            left: 14px;
-            color: var(--text-muted);
-            font-size: 0.95rem;
-            font-weight: 500;
-        }
-
-        input[type="text"], select {
-            width: 100%;
-            padding: 12px 14px 12px 42px;
-            font-size: 1rem;
-            border: 1px solid var(--border-light);
-            border-radius: 8px;
-            background: #fff;
-            color: var(--text-dark);
-            outline: none;
-            transition: all 0.2s ease;
-        }
-
-        select {
-            padding-left: 14px;
-            cursor: pointer;
-        }
-
-        input[type="text"]:focus, select:focus {
-            border-color: var(--accent-blue);
-            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
-        }
-
-        input.input-invalid {
-            border-color: #dc2626;
-            box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.12);
-        }
-
-        .hint {
-            font-size: 0.78rem;
-            color: var(--text-muted);
-            margin-top: 6px;
-            line-height: 1.4;
-        }
-
-        .avisos {
-            margin-bottom: 24px;
-        }
-
-        .aviso {
-            display: flex;
-            gap: 10px;
-            align-items: flex-start;
-            padding: 12px 14px;
-            border-radius: 8px;
-            font-size: 0.85rem;
-            line-height: 1.45;
-            margin-bottom: 10px;
-            border: 1px solid;
-        }
-
-        .aviso:last-child {
-            margin-bottom: 0;
-        }
-
-        .aviso .icone {
-            font-weight: 800;
-            flex-shrink: 0;
-            line-height: 1.2;
-        }
-
-        .aviso-error {
-            background: #fef2f2;
-            border-color: #fca5a5;
-            color: #991b1b;
-        }
-
-        .aviso-error .icone { color: #dc2626; }
-
-        .aviso-warn {
-            background: #fffbeb;
-            border-color: #fcd34d;
-            color: #92400e;
-        }
-
-        .aviso-warn .icone { color: #d97706; }
-
-        .aviso-info {
-            background: #eff6ff;
-            border-color: #bfdbfe;
-            color: #1e40af;
-        }
-
-        .aviso-info .icone { color: #2563eb; }
-
-        .aviso-ok {
-            background: var(--bg-green);
-            border-color: var(--border-green);
-            color: #065f46;
-        }
-
-        .aviso-ok .icone { color: var(--accent-green); }
-
-        .rec-box {
-            background-color: var(--bg-green);
-            border: 1px solid var(--border-green);
-            border-radius: 10px;
-            padding: 20px;
-            text-align: center;
-            margin-bottom: 24px;
-        }
-
-        .rec-tag {
-            font-size: 0.75rem;
-            font-weight: 700;
-            color: var(--accent-green);
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            margin-bottom: 6px;
-        }
-
-        .rec-title {
-            font-size: 1.35rem;
-            font-weight: 800;
-            color: #065f46;
-            margin-bottom: 6px;
-        }
-
-        .rec-desc {
-            font-size: 0.88rem;
-            color: #047857;
-            line-height: 1.4;
-        }
-
-        .metrics-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 10px;
-        }
-
-        .metrics-table th, .metrics-table td {
-            padding: 12px 8px;
-            text-align: left;
-            font-size: 0.88rem;
-            border-bottom: 1px solid var(--border-light);
-        }
-
-        .metrics-table th {
-            color: var(--text-muted);
-            font-weight: 600;
-            font-size: 0.78rem;
-            text-transform: uppercase;
-        }
-
-        .metrics-table td.val {
-            text-align: right;
-            font-weight: 600;
-        }
-
-        .highlight-row {
-            background-color: var(--bg-slate);
-            font-weight: 700;
-        }
-
-        .tag-anexo {
-            display: inline-block;
-            padding: 3px 8px;
-            border-radius: 4px;
-            font-size: 0.75rem;
-            font-weight: 700;
-        }
-
-        .tag-anexo3 {
-            background: #dcfce7;
-            color: #166534;
-        }
-
-        .tag-anexo5 {
-            background: #fee2e2;
-            color: #991b1b;
-        }
-
-        footer {
-            text-align: center;
-            padding: 24px;
-            color: #64748b;
-            font-size: 0.85rem;
-            border-top: 1px solid rgba(255,255,255,0.05);
-        }
-
-        footer .status {
-            display: inline-block;
-            margin-top: 8px;
-            padding: 4px 12px;
-            border-radius: 16px;
-            font-size: 0.75rem;
-            font-weight: 600;
-            background: rgba(255,255,255,0.08);
-            color: #94a3b8;
-        }
-
-        footer .status.ok { color: #6ee7b7; }
-        footer .status.fail { color: #f87171; }
-
-        .btn-row {
-            display: flex;
-            gap: 10px;
-            margin-top: 24px;
-        }
-
-        .btn-row .btn {
-            flex: 1;
-        }
-
-        .btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            padding: 12px 18px;
-            font-size: 0.9rem;
-            font-weight: 600;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-        }
-
-        .btn svg {
-            width: 18px;
-            height: 18px;
-            flex-shrink: 0;
-        }
-
-        .btn-primary {
-            background: var(--accent-blue);
-            color: #fff;
-        }
-
-        .btn-primary:hover {
-            background: #1d4ed8;
-        }
-
-        .btn-secondary {
-            background: #fff;
-            color: var(--accent-blue);
-            border: 1px solid var(--border-light);
-        }
-
-        .btn-secondary:hover {
-            background: var(--bg-slate);
-        }
-
-        @media print {
-            @page { margin: 0.8cm; }
-
-            body {
-                background: #ffffff;
-            }
-
-            header, footer, .btn-row {
-                display: none !important;
-            }
-
-            main {
-                margin: 0;
-                max-width: none;
-                padding: 0;
-            }
-
-            .grid-container {
-                grid-template-columns: 1fr 1fr;
-                gap: 12px;
-                align-items: start;
-            }
-
-            .card {
-                box-shadow: none;
-                border: 1px solid #cbd5e1;
-                padding: 14px;
-                break-inside: avoid;
-            }
-
-            .card-header {
-                margin-bottom: 12px;
-                padding-bottom: 10px;
-            }
-
-            .form-group {
-                margin-bottom: 8px;
-            }
-
-            .hint {
-                font-size: 0.66rem;
-                margin-top: 4px;
-                line-height: 1.3;
-            }
-
-            .avisos {
-                margin-bottom: 10px;
-            }
-
-            .aviso {
-                padding: 7px 10px;
-                font-size: 0.74rem;
-                line-height: 1.35;
-                margin-bottom: 6px;
-            }
-
-            .rec-box {
-                padding: 12px 14px;
-                margin-bottom: 12px;
-            }
-
-            .rec-title {
-                font-size: 1.05rem;
-            }
-
-            .rec-desc {
-                font-size: 0.8rem;
-            }
-
-            .metrics-table th, .metrics-table td {
-                padding: 5px 6px;
-                font-size: 0.78rem;
-            }
-
-            * {
-                -webkit-print-color-adjust: exact;
-                print-color-adjust: exact;
-            }
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Calculadora Fator R - Simples Nacional | Anexo III vs Anexo V</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg-dark:#0f172a;--bg-card:#fff;--text-dark:#0f172a;--text-muted:#64748b;--accent-green:#059669;--bg-green:#ecfdf5;--border-green:#a7f3d0;--accent-blue:#2563eb;--bg-slate:#f8fafc;--border-light:#e2e8f0;--shadow-lg:0 10px 25px -5px rgba(0,0,0,.05),0 8px 10px -6px rgba(0,0,0,.01);--radius:12px}
+*{box-sizing:border-box;margin:0;padding:0;font-family:'Inter',system-ui,-apple-system,sans-serif}
+body{background-color:var(--bg-dark);color:var(--text-dark);min-height:100vh;display:flex;flex-direction:column}
+header{padding:40px 20px 80px;text-align:center;color:#fff;max-width:1000px;margin:0 auto;width:100%}
+.badge{display:inline-block;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);padding:6px 16px;border-radius:20px;font-size:.85rem;margin-bottom:20px}
+h1{font-size:2.2rem;font-weight:800;margin-bottom:12px;letter-spacing:-.5px}
+p.subtitle{color:#94a3b8;font-size:1.05rem;max-width:880px;margin:0 auto;line-height:1.6}
+main{max-width:1100px;margin:-40px auto 40px;padding:0 20px;width:100%;flex:1}
+.grid-container{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+@media(max-width:868px){.grid-container{grid-template-columns:1fr}}
+.card{background:var(--bg-card);border-radius:var(--radius);padding:28px;box-shadow:var(--shadow-lg);border:1px solid var(--border-light)}
+.card-header{display:flex;align-items:center;gap:10px;margin-bottom:24px;padding-bottom:16px;border-bottom:1px solid var(--border-light)}
+.card-header svg{width:22px;height:22px;color:var(--accent-blue)}
+.card-header h2{font-size:1.2rem;font-weight:700}
+.form-group{margin-bottom:20px}
+label{display:block;font-size:.875rem;font-weight:600;color:#334155;margin-bottom:8px}
+.input-wrapper{position:relative;display:flex;align-items:center}
+.input-prefix{position:absolute;left:14px;color:var(--text-muted);font-size:.95rem;font-weight:500}
+input[type=text],select{width:100%;padding:12px 14px 12px 42px;font-size:1rem;border:1px solid var(--border-light);border-radius:8px;background:#fff;color:var(--text-dark);outline:none;transition:all .2s}
+select{padding-left:14px;cursor:pointer}
+input[type=text]:focus,select:focus{border-color:var(--accent-blue);box-shadow:0 0 0 3px rgba(37,99,235,.15)}
+input.input-invalid{border-color:#dc2626;box-shadow:0 0 0 3px rgba(220,38,38,.12)}
+.hint{font-size:.78rem;color:var(--text-muted);margin-top:6px;line-height:1.4}
+.check-row{display:flex;gap:8px;align-items:flex-start;font-size:.85rem;color:#334155}
+.check-row input{margin-top:3px}
+.avisos{margin-bottom:24px}
+.aviso{display:flex;gap:10px;align-items:flex-start;padding:12px 14px;border-radius:8px;font-size:.85rem;line-height:1.45;margin-bottom:10px;border:1px solid}
+.aviso:last-child{margin-bottom:0}
+.aviso .icone{font-weight:800;flex-shrink:0}
+.aviso-error{background:#fef2f2;border-color:#fca5a5;color:#991b1b}
+.aviso-warn{background:#fffbeb;border-color:#fcd34d;color:#92400e}
+.aviso-info{background:#eff6ff;border-color:#bfdbfe;color:#1e40af}
+.aviso-ok{background:var(--bg-green);border-color:var(--border-green);color:#065f46}
+.rec-box{border-radius:10px;padding:20px;text-align:center;margin-bottom:24px;border:1px solid}
+.rec-tag{font-size:.75rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:6px}
+.rec-title{font-size:1.35rem;font-weight:800;margin-bottom:6px}
+.rec-desc{font-size:.88rem;line-height:1.4}
+.metrics-table{width:100%;border-collapse:collapse;margin-top:10px}
+.metrics-table th,.metrics-table td{padding:12px 8px;text-align:left;font-size:.88rem;border-bottom:1px solid var(--border-light)}
+.metrics-table th{color:var(--text-muted);font-weight:600;font-size:.78rem;text-transform:uppercase}
+.metrics-table td.val{text-align:right;font-weight:600}
+.highlight-row{background-color:var(--bg-slate);font-weight:700}
+.tag-anexo{display:inline-block;padding:3px 8px;border-radius:4px;font-size:.75rem;font-weight:700}
+.tag-anexo3{background:#dcfce7;color:#166534}
+.tag-anexo5{background:#fee2e2;color:#991b1b}
+.memoria{background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:12px 14px;font-size:.82rem;line-height:1.55;color:#334155;margin-top:16px;white-space:pre-wrap}
+.memoria strong{color:#0f172a}
+.rep-table{width:100%;border-collapse:collapse;margin-top:12px;font-size:.82rem}
+.rep-table th,.rep-table td{padding:8px;border-bottom:1px solid #e2e8f0;text-align:right}
+.rep-table th:first-child,.rep-table td:first-child{text-align:left}
+.rep-table th{color:#64748b;text-transform:uppercase;font-size:.72rem}
+footer{text-align:center;padding:24px;color:#64748b;font-size:.85rem}
+footer .status{display:inline-block;margin-top:8px;padding:4px 12px;border-radius:16px;font-size:.75rem;font-weight:600;background:rgba(255,255,255,.08);color:#94a3b8}
+footer .status.ok{color:#6ee7b7}footer .status.fail{color:#f87171}
+.btn-row{display:flex;gap:10px;margin-top:24px;flex-wrap:wrap}
+.btn{flex:1;display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:12px 14px;font-size:.88rem;font-weight:600;border-radius:8px;cursor:pointer;border:1px solid transparent;white-space:nowrap}
+.btn-primary{background:var(--accent-blue);color:#fff}
+.btn-primary:hover{background:#1d4ed8}
+.btn-secondary{background:#fff;color:var(--accent-blue);border-color:var(--border-light)}
+.btn-secondary:hover{background:var(--bg-slate)}
+.btn-ghost{background:#f1f5f9;color:#334155;border-color:#e2e8f0}
+.section-title{font-size:.9rem;font-weight:700;margin:18px 0 8px;color:#0f172a}
+@media print{@page{margin:.8cm}body{background:#fff}header,footer,.btn-row,.no-print{display:none!important}main{margin:0;max-width:none;padding:0}.grid-container{grid-template-columns:1fr 1fr;gap:12px}.card{box-shadow:none;border:1px solid #cbd5e1;padding:14px;break-inside:avoid}*{print-color-adjust:exact;-webkit-print-color-adjust:exact}}
+</style>
 </head>
-<body oncontextmenu="return false;" onkeydown="return disableShortcuts(event);">
-
-    <header>
-        <span class="badge copyable">LC 123/2006 & Resolução CGSN Nº 140/2018 (Art. 26 e Art. 22)</span>
-        <h1 class="copyable">Calculadora do Fator R & DAS Oficial</h1>
-        <p class="subtitle copyable">Planejamento Tributário Estratégico: Descubra se sua empresa pode migrar do Anexo V para o Anexo III e calcule a Alíquota Efetiva e o valor exato do DAS com separação de retenção de ISS conforme a tabela oficial. O Fator R é a razão entre a folha de salários dos últimos 12 meses e a receita bruta do mesmo período. A partir de 28%, a empresa de serviços é tributada pelo Anexo III; abaixo, pelo Anexo V. A ferramenta valida limites do Simples Nacional, dados zerados e campos inconsistentes.</p>
-    </header>
-
-    <main>
-        <div class="grid-container">
-            <div class="card">
-                <div class="card-header">
-                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"></path>
-                    </svg>
-                    <h2>Parâmetros de Apuração Mensal</h2>
-                </div>
-
-                <div class="form-group">
-                    <label for="tipoEmpresa">Tempo de Atividade da Empresa</label>
-                    <select id="tipoEmpresa" class="copyable" onchange="toggleCamposEspeciais()">
-                        <option value="normal" selected>Empresa com 13 meses ou mais de atividade</option>
-                        <option value="inicio">Mês de início de atividades (1º mês)</option>
-                        <option value="proporcional">Empresa com menos de 13 meses de atividade (Anualizada)</option>
-                    </select>
-                    <div class="hint">Define a regra do Fator R (Art. 26) e proporção de RBT12/Folha12 (Art. 22 da Resolução CGSN nº 140/2018).</div>
-                </div>
-
-                <div class="form-group" id="groupMeses" style="display: none;">
-                    <label for="mesesAtividade">Meses em Atividade (de 2 a 12 meses)</label>
-                    <input type="text" id="mesesAtividade" class="copyable" value="6" oninput="validateMeses(this); calculate();">
-                    <div class="hint">Usado para proporcionalizar RBT12 = (Soma das receitas acumuladas / meses) * 12.</div>
-                </div>
-
-                <div class="form-group" id="groupRbt12">
-                    <label for="rbt12" id="labelRbt12">Receita Bruta Acumulada (RBT12 / RBT12r)</label>
-                    <div class="input-wrapper">
-                        <span class="input-prefix">R$</span>
-                        <input type="text" id="rbt12" class="copyable" value="227.786,00" oninput="formatAndCalculate(this)">
-                    </div>
-                    <div class="hint" id="hintRbt12">Faturamento bruto dos últimos 12 meses anteriores ao PA.</div>
-                </div>
-
-                <div class="form-group" id="groupFolha12">
-                    <label for="folha12" id="labelFolha12">Folha de Pagamento Acumulada (Folha 12 / FS12)</label>
-                    <div class="input-wrapper">
-                        <span class="input-prefix">R$</span>
-                        <input type="text" id="folha12" class="copyable" value="65.000,00" oninput="formatAndCalculate(this)">
-                    </div>
-                    <div class="hint" id="hintFolha12">Salários, pró-labore e FGTS nos últimos 12 meses anteriores ao PA.</div>
-                </div>
-
-                <div class="form-group">
-                    <label for="recSemIss">Receita do Mês SEM Retenção de ISS (RPAr)</label>
-                    <div class="input-wrapper">
-                        <span class="input-prefix">R$</span>
-                        <input type="text" id="recSemIss" class="copyable" value="15.000,00" oninput="formatAndCalculate(this)">
-                    </div>
-                    <div class="hint">Serviços tributados sem retenção do ISS na fonte no PA atual.</div>
-                </div>
-
-                <div class="form-group">
-                    <label for="recComIss">Receita do Mês COM Retenção de ISS</label>
-                    <div class="input-wrapper">
-                        <span class="input-prefix">R$</span>
-                        <input type="text" id="recComIss" class="copyable" value="0,00" oninput="formatAndCalculate(this)">
-                    </div>
-                    <div class="hint">Serviços tributados com retenção de ISS no PA atual.</div>
-                </div>
-
-                <div class="form-group" id="groupFspa" style="display: none;">
-                    <label for="fspa">Folha de Pagamento do Mês Atual (FSPA)</label>
-                    <div class="input-wrapper">
-                        <span class="input-prefix">R$</span>
-                        <input type="text" id="fspa" class="copyable" value="0,00" oninput="formatAndCalculate(this)">
-                    </div>
-                    <div class="hint">Massa salarial e pró-labore do mês de apuração (Art. 26, § 6º).</div>
-                </div>
-
-                <div class="btn-row">
-                    <button type="button" class="btn btn-secondary" onclick="limparCampos()">
-                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" stroke-width="2">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
-                        </svg>
-                        Limpar valores
-                    </button>
-                </div>
-            </div>
-
-            <div class="card">
-                <div class="card-header">
-                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
-                    </svg>
-                    <h2>Diagnóstico e Cálculo do DAS Oficial</h2>
-                </div>
-
-                <div class="avisos" id="avisos"></div>
-
-                <div class="rec-box" id="recBox">
-                    <div class="rec-tag">RECOMENDAÇÃO TRIBUTÁRIA</div>
-                    <div class="rec-title copyable" id="recTitle">Calculando…</div>
-                    <div class="rec-desc copyable" id="recDesc"></div>
-                </div>
-
-                <table class="metrics-table">
-                    <thead>
-                        <tr>
-                            <th>Métrica / Etapa</th>
-                            <th style="text-align: right;">Resultado</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>Regra do Fator R Aplicada</td>
-                            <td class="val copyable" id="resRegra">—</td>
-                        </tr>
-                        <tr>
-                            <td>Fator R Atingido</td>
-                            <td class="val copyable" id="resFatorR">—</td>
-                        </tr>
-                        <tr>
-                            <td>Enquadramento Tributário</td>
-                            <td class="val copyable" id="resEnquadramento">—</td>
-                        </tr>
-                        <tr>
-                            <td>Faixa do Simples Nacional</td>
-                            <td class="val copyable" id="resFaixa">—</td>
-                        </tr>
-                        <tr>
-                            <td>Alíquota Efetiva Base</td>
-                            <td class="val copyable" id="resAliqEfetiva">—</td>
-                        </tr>
-                        <tr>
-                            <td>Alíquota Efetiva (COM Retenção ISS)</td>
-                            <td class="val copyable" id="resAliqComIss">—</td>
-                        </tr>
-                        <tr>
-                            <td>Imposto Receita Sem Retenção</td>
-                            <td class="val copyable" id="resImpostoSemIss">—</td>
-                        </tr>
-                        <tr>
-                            <td>Imposto Receita Com Retenção</td>
-                            <td class="val copyable" id="resImpostoComIss">—</td>
-                        </tr>
-                        <tr class="highlight-row">
-                            <td>VALOR TOTAL DO DAS</td>
-                            <td class="val copyable" id="resTotalDas" style="color: var(--accent-green); font-size: 1.05rem;">—</td>
-                        </tr>
-                        <tr class="highlight-row">
-                            <td>Economia Estimada vs Anexo V</td>
-                            <td class="val copyable" id="resEconomia" style="color: var(--accent-green); font-weight: 800;">—</td>
-                        </tr>
-                    </tbody>
-                </table>
-
-                <div class="btn-row">
-                    <button type="button" class="btn btn-primary" onclick="window.print()">
-                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" stroke-width="2">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4H8v4a2 2 0 002 2zm-2-14V5a2 2 0 012-2h4a2 2 0 012 2v2H8z"></path>
-                        </svg>
-                        Imprimir relatório
-                    </button>
-                </div>
-            </div>
-        </div>
-    </main>
-
-    <footer>
-        <p class="copyable">&copy; 2026 Simulador Fator R & DAS Oficial - Repositório `fator-r` (Atualizado com regras do Art. 26 da Resolução CGSN nº 140/2018).</p>
-        <span class="status" id="selfTestStatus">Verificando autoteste…</span>
-    </footer>
-
-    <script>
-        const LIMITE_SIMPLES = 4800000.00;
-
-        function disableShortcuts(e) {
-            if (e.keyCode === 123) return false;
-            if (e.ctrlKey && e.shiftKey && (e.keyCode === 73 || e.keyCode === 74 || e.keyCode === 67)) return false;
-            if (e.ctrlKey && (e.keyCode === 85 || e.keyCode === 83)) return false;
-        }
-
-        function parseCurrency(value) {
-            if (!value) return 0;
-            const limpo = value.replace(/\s/g, '');
-            if (/^-?\d+(\.\d+)?$/.test(limpo)) return parseFloat(limpo) || 0;
-            return parseFloat(limpo.replace(/\./g, '').replace(',', '.')) || 0;
-        }
-
-        function formatCurrency(value) {
-            return value.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-        }
-
-        function formatAndCalculate(input) {
-            let val = input.value.replace(/\D/g, '');
-            if (val === '') val = '0';
-            input.value = formatCurrency(parseFloat(val) / 100);
-            calculate();
-        }
-
-        function limparCampos() {
-            document.getElementById('tipoEmpresa').value = 'normal';
-            document.getElementById('rbt12').value = '0,00';
-            document.getElementById('folha12').value = '0,00';
-            document.getElementById('recSemIss').value = '0,00';
-            document.getElementById('recComIss').value = '0,00';
-            document.getElementById('fspa').value = '0,00';
-            document.getElementById('mesesAtividade').value = '6';
-            validateMeses(document.getElementById('mesesAtividade'));
-            toggleCamposEspeciais();
-        }
-
-        function validateMeses(input) {
-            const v = parseInt(input.value.replace(/\D/g, ''), 10);
-            if (v >= 2 && v <= 12) {
-                input.classList.remove('input-invalid');
-            } else {
-                input.classList.add('input-invalid');
-            }
-        }
-
-        const anexo3 = [
-            { faixa: 1, ate: 180000.00, aliq: 0.0600, deducao: 0, issPerc: 0.3350 },
-            { faixa: 2, ate: 360000.00, aliq: 0.1120, deducao: 9360.00, issPerc: 0.3200 },
-            { faixa: 3, ate: 720000.00, aliq: 0.1350, deducao: 17640.00, issPerc: 0.3250 },
-            { faixa: 4, ate: 1800000.00, aliq: 0.1600, deducao: 35640.00, issPerc: 0.3250 },
-            { faixa: 5, ate: 3600000.00, aliq: 0.2100, deducao: 125640.00, issPerc: 0.3350 },
-            { faixa: 6, ate: 4800000.00, aliq: 0.3300, deducao: 648000.00, issPerc: 0.0000 }
-        ];
-
-        const anexo5 = [
-            { faixa: 1, ate: 180000.00, aliq: 0.1550, deducao: 0, issPerc: 0.1400 },
-            { faixa: 2, ate: 360000.00, aliq: 0.1800, deducao: 4500.00, issPerc: 0.1700 },
-            { faixa: 3, ate: 720000.00, aliq: 0.1950, deducao: 9900.00, issPerc: 0.1900 },
-            { faixa: 4, ate: 1800000.00, aliq: 0.2050, deducao: 17100.00, issPerc: 0.2100 },
-            { faixa: 5, ate: 3600000.00, aliq: 0.2300, deducao: 62100.00, issPerc: 0.2350 },
-            { faixa: 6, ate: 4800000.00, aliq: 0.3050, deducao: 540000.00, issPerc: 0.0000 }
-        ];
-
-        function getAnexoData(tabela, rbt12) {
-            for (let linha of tabela) {
-                if (rbt12 <= linha.ate) return linha;
-            }
-            return tabela[tabela.length - 1];
-        }
-
-        function getFaixa(tabela, rbt12) {
-            return getAnexoData(tabela, rbt12).faixa;
-        }
-
-        function calcularAliquotaEfetiva(tabela, rbt12) {
-            const linha = getAnexoData(tabela, rbt12);
-            if (rbt12 > 0) {
-                const efetiva = ((rbt12 * linha.aliq) - linha.deducao) / rbt12;
-                return Math.max(efetiva, 0);
-            }
-            return linha.aliq;
-        }
-
-        function fatorRNormal(rbt12, folha12) {
-            if (folha12 === 0 && rbt12 === 0) return 1;
-            if (folha12 > 0 && rbt12 === 0) return 28;
-            if (folha12 > 0 && rbt12 > 0) return (folha12 / rbt12) * 100;
-            return 1;
-        }
-
-        function fatorRProporcional(somaRec, somaFolha) {
-            if (somaFolha === 0 && somaRec === 0) return 1;
-            if (somaFolha > 0 && somaRec === 0) return 28;
-            if (somaFolha > 0 && somaRec > 0) return (somaFolha / somaRec) * 100;
-            return 1;
-        }
-
-        function fatorRInicio(fspa, rpar) {
-            if (fspa > 0 && rpar === 0) return 28;
-            if (fspa === 0 && rpar > 0) return 1;
-            if (fspa > 0 && rpar > 0) return (fspa / rpar) * 100;
-            return 1;
-        }
-
-        function toggleCamposEspeciais() {
-            const tipo = document.getElementById('tipoEmpresa').value;
-            const groupMeses = document.getElementById('groupMeses');
-            const groupRbt12 = document.getElementById('groupRbt12');
-            const groupFolha12 = document.getElementById('groupFolha12');
-            const groupFspa = document.getElementById('groupFspa');
-            const labelRbt12 = document.getElementById('labelRbt12');
-            const hintRbt12 = document.getElementById('hintRbt12');
-            const labelFolha12 = document.getElementById('labelFolha12');
-            const hintFolha12 = document.getElementById('hintFolha12');
-
-            if (tipo === 'inicio') {
-                groupMeses.style.display = 'none';
-                groupRbt12.style.display = 'none';
-                groupFolha12.style.display = 'none';
-                groupFspa.style.display = 'block';
-            } else if (tipo === 'proporcional') {
-                groupMeses.style.display = 'block';
-                groupRbt12.style.display = 'block';
-                groupFolha12.style.display = 'block';
-                groupFspa.style.display = 'none';
-                labelRbt12.innerText = 'Soma das Receitas Acumuladas nos Meses Anteriores';
-                hintRbt12.innerText = 'Soma do faturamento bruto dos meses em atividade antes do PA atual.';
-                labelFolha12.innerText = 'Soma das Folhas Acumuladas nos Meses Anteriores';
-                hintFolha12.innerText = 'Soma da massa salarial/pró-labore dos meses em atividade antes do PA atual.';
-            } else {
-                groupMeses.style.display = 'none';
-                groupRbt12.style.display = 'block';
-                groupFolha12.style.display = 'block';
-                groupFspa.style.display = 'none';
-                labelRbt12.innerText = 'Receita Bruta Acumulada (RBT12 / RBT12r)';
-                hintRbt12.innerText = 'Faturamento bruto dos últimos 12 meses anteriores ao PA.';
-                labelFolha12.innerText = 'Folha de Pagamento Acumulada (Folha 12 / FS12)';
-                hintFolha12.innerText = 'Salários, pró-labore e FGTS nos últimos 12 meses anteriores ao PA.';
-            }
-            calculate();
-        }
-
-        function calcularDas(recSemIss, recComIss, aliqEfetiva, linha) {
-            const aliqComIss = aliqEfetiva * (1 - linha.issPerc);
-            const impostoSemIss = recSemIss * aliqEfetiva;
-            const impostoComIss = recComIss * aliqComIss;
-            return {
-                aliqComIss: aliqComIss,
-                impostoSemIss: impostoSemIss,
-                impostoComIss: impostoComIss,
-                total: impostoSemIss + impostoComIss
-            };
-        }
-
-        function calcularProLaboreNecessario(tipo, rbt12Calc, folha12Calc) {
-            if (tipo === 'inicio') {
-                const fspa = parseCurrency(document.getElementById('fspa').value);
-                const rpar = parseCurrency(document.getElementById('recSemIss').value) + parseCurrency(document.getElementById('recComIss').value);
-                return (rpar * 0.28) - fspa;
-            }
-            if (tipo === 'proporcional') {
-                let meses = parseInt(document.getElementById('mesesAtividade').value.replace(/\D/g, ''), 10) || 1;
-                if (meses < 1) meses = 1;
-                if (meses > 12) meses = 12;
-                const somaRec = parseCurrency(document.getElementById('rbt12').value);
-                const somaFolha = parseCurrency(document.getElementById('folha12').value);
-                return (somaRec * 0.28) - somaFolha;
-            }
-            return (rbt12Calc * 0.28) - folha12Calc;
-        }
-
-        function calculate() {
-            const tipo = document.getElementById('tipoEmpresa').value;
-            const avisos = [];
-
-            const recSemIss = parseCurrency(document.getElementById('recSemIss').value);
-            const recComIss = parseCurrency(document.getElementById('recComIss').value);
-            const rpar = recSemIss + recComIss;
-
-            let rbt12Calc = 0;
-            let folha12Calc = 0;
-            let fatorR = 0;
-            let regraAplicada = "";
-            let meses = 0;
-
-            if (tipo === 'inicio') {
-                regraAplicada = "Art. 26, § 6º (Mês de Início)";
-                const fspa = parseCurrency(document.getElementById('fspa').value);
-                fatorR = fatorRInicio(fspa, rpar);
-                rbt12Calc = rpar * 12;
-                folha12Calc = fspa * 12;
-
-                if (fspa === 0) {
-                    avisos.push({ tipo: 'warn', msg: 'Folha do mês zerada (FSPA = R$ 0,00). O Fator R foi arbitrado em ' + fatorR.toFixed(2).replace('.', ',') + '% (regra do Art. 26, § 6º). Confira se a massa salarial do mês está preenchida.' });
-                }
-            } else if (tipo === 'proporcional') {
-                regraAplicada = "Art. 26, § 4º (Menos de 13 meses)";
-                meses = parseInt(document.getElementById('mesesAtividade').value.replace(/\D/g, ''), 10) || 0;
-                if (meses < 2) meses = 2;
-                if (meses > 12) meses = 12;
-
-                const somaRec = parseCurrency(document.getElementById('rbt12').value);
-                const somaFolha = parseCurrency(document.getElementById('folha12').value);
-
-                rbt12Calc = (somaRec / meses) * 12;
-                folha12Calc = (somaFolha / meses) * 12;
-                fatorR = fatorRProporcional(somaRec, somaFolha);
-
-                const mesesDigitado = parseInt(document.getElementById('mesesAtividade').value.replace(/\D/g, ''), 10) || 0;
-                if (mesesDigitado < 2 || mesesDigitado > 12) {
-                    avisos.push({ tipo: 'error', msg: 'Meses em atividade fora do intervalo válido (2 a 12). Valor utilizado: ' + meses + ' meses. Ajuste o campo para evitar projeção incorreta.' });
-                }
-                if (somaRec === 0) {
-                    avisos.push({ tipo: 'warn', msg: 'Soma das receitas anterior zerada. O Fator R foi arbitrado em ' + fatorR.toFixed(2).replace('.', ',') + '% (Art. 26, § 7º). Confira os dados.' });
-                }
-                if (somaFolha === 0) {
-                    avisos.push({ tipo: 'warn', msg: 'Soma das folhas anterior zerada. Enquadramento volta ao piso (1,00%). Confira se a massa salarial está completa.' });
-                }
-            } else {
-                regraAplicada = "Art. 26, Caput (Regra Geral)";
-                rbt12Calc = parseCurrency(document.getElementById('rbt12').value);
-                folha12Calc = parseCurrency(document.getElementById('folha12').value);
-                fatorR = fatorRNormal(rbt12Calc, folha12Calc);
-
-                if (rbt12Calc === 0) {
-                    avisos.push({ tipo: 'warn', msg: 'Receita Bruta (RBT12) zerada. O Fator R foi arbitrado em ' + fatorR.toFixed(2).replace('.', ',') + '% (Art. 26, § 7º). Confira os valores informados.' });
-                }
-                if (folha12Calc === 0) {
-                    avisos.push({ tipo: 'warn', msg: 'Folha de Pagamento (Folha 12) zerada. O Fator R foi arbitrado no piso (1,00%) e a tributação pende ao Anexo V. Verifique se a massa salarial do período está completa.' });
-                }
-            }
-
-            if (rbt12Calc > LIMITE_SIMPLES) {
-                avisos.push({ tipo: 'error', msg: 'RBT12 de R$ ' + formatCurrency(rbt12Calc) + ' ultrapassa o limite anual do Simples Nacional (R$ ' + formatCurrency(LIMITE_SIMPLES) + ', Art. 3º, II, LC 123/2006). Nessa condição a empresa não permanece no regime. O cálculo abaixo é exibido apenas como referência.' });
-            }
-
-            if (rpar === 0) {
-                avisos.push({ tipo: 'info', msg: 'Sem receita no mês de apuração (RPAr = R$ 0,00) - o valor do DAS será R$ 0,00 no período, independentemente do anexo.' });
-            }
-
-            const isAnexo3 = fatorR >= 28.00 - 1e-9;
-            const tabela = isAnexo3 ? anexo3 : anexo5;
-            const linha = getAnexoData(tabela, rbt12Calc);
-            const aliqEfetiva = calcularAliquotaEfetiva(tabela, rbt12Calc);
-            const das = calcularDas(recSemIss, recComIss, aliqEfetiva, linha);
-
-            let economia = 0;
-            let temComparativo = false;
-            if (isAnexo3) {
-                const linhaA5 = getAnexoData(anexo5, rbt12Calc);
-                const aliqA5 = calcularAliquotaEfetiva(anexo5, rbt12Calc);
-                const dasA5 = calcularDas(recSemIss, recComIss, aliqA5, linhaA5);
-                economia = Math.max(dasA5.total - das.total, 0);
-                temComparativo = true;
-            }
-
-            renderAvisos(avisos);
-
-            document.getElementById('resRegra').innerText = regraAplicada;
-            document.getElementById('resFatorR').innerText = fatorR.toFixed(2).replace('.', ',') + '%';
-            document.getElementById('resFaixa').innerText = linha.faixa + 'ª Faixa (RBT12: R$ ' + formatCurrency(rbt12Calc) + ')';
-            document.getElementById('resAliqEfetiva').innerText = (aliqEfetiva * 100).toFixed(5).replace('.', ',') + '%';
-            document.getElementById('resAliqComIss').innerText = (das.aliqComIss * 100).toFixed(5).replace('.', ',') + '%';
-            document.getElementById('resImpostoSemIss').innerText = 'R$ ' + formatCurrency(das.impostoSemIss);
-            document.getElementById('resImpostoComIss').innerText = 'R$ ' + formatCurrency(das.impostoComIss);
-            document.getElementById('resTotalDas').innerText = 'R$ ' + formatCurrency(das.total);
-            document.getElementById('resEconomia').innerText = temComparativo ? 'R$ ' + formatCurrency(economia) : '—';
-
-            const recBox = document.getElementById('recBox');
-            const recTitle = document.getElementById('recTitle');
-            const recDesc = document.getElementById('recDesc');
-
-            if (isAnexo3) {
-                document.getElementById('resEnquadramento').innerHTML = '<span class="tag-anexo tag-anexo3">Anexo III</span>';
-                recBox.style.backgroundColor = 'var(--bg-green)';
-                recBox.style.borderColor = 'var(--border-green)';
-                recTitle.innerText = 'Tributado no Anexo III';
-                recTitle.style.color = '#065f46';
-                recDesc.innerHTML = 'Fator R de <strong>' + fatorR.toFixed(2).replace('.', ',') + '%</strong> (&ge; 28,00%). Sua empresa está na menor alíquota do Simples Nacional.';
-                recDesc.style.color = '#047857';
-            } else {
-                document.getElementById('resEnquadramento').innerHTML = '<span class="tag-anexo tag-anexo5">Anexo V</span>';
-                const necessarios = Math.max(calcularProLaboreNecessario(tipo, rbt12Calc, folha12Calc), 0);
-                recBox.style.backgroundColor = '#fef2f2';
-                recBox.style.borderColor = '#fca5a5';
-                recTitle.innerText = 'Tributado no Anexo V';
-                recTitle.style.color = '#991b1b';
-                const termoPeriodo = (tipo === 'inicio') ? 'no próprio mês' : 'no período acumulado';
-                recDesc.innerHTML = 'Fator R de <strong>' + fatorR.toFixed(2).replace('.', ',') + '%</strong> (< 28,00%). Para migrar ao Anexo III, aumente a folha/pró-labore em <strong>R$ ' + formatCurrency(necessarios) + '</strong> ' + termoPeriodo + '.';
-                recDesc.style.color = '#b91c1c';
-            }
-        }
-
-        function renderAvisos(avisos) {
-            const container = document.getElementById('avisos');
-            if (avisos.length === 0) {
-                container.innerHTML = '<div class="aviso aviso-ok"><span class="icone">OK</span><span>Nenhum alerta: dados consistentes dentro dos limites do Simples Nacional.</span></div>';
-                return;
-            }
-            let html = '';
-            for (const aviso of avisos) {
-                const icone = aviso.tipo === 'error' ? 'X' : (aviso.tipo === 'warn' ? '!' : 'i');
-                html += '<div class="aviso aviso-' + aviso.tipo + '"><span class="icone">' + icone + '</span><span>' + aviso.msg + '</span></div>';
-            }
-            container.innerHTML = html;
-        }
-
-        function quase(a, b, tol) {
-            return Math.abs(a - b) <= tol;
-        }
-
-        function runSelfTests() {
-            const falhas = [];
-            const ok = (cond, nome) => { if (!cond) falhas.push(nome); };
-
-            ok(quase(fatorRNormal(227786, 65000), 28.5356, 0.01), 'Fator R - caso base');
-            ok(getFaixa(anexo3, 227786) === 2, 'Faixa - Anexo III caso base');
-            ok(quase(calcularAliquotaEfetiva(anexo3, 227786), 0.0709088, 0.000001), 'Alíquota efetiva - Anexo III caso base');
-            ok(quase(calcularAliquotaEfetiva(anexo5, 227786), 0.1602446, 0.000001), 'Alíquota efetiva - Anexo V caso base');
-
-            ok(quase(fatorRNormal(100000, 28000), 28, 1e-9), 'Fator R - limite exato 28%');
-            ok(fatorRNormal(100000, 27999) < 28, 'Fator R - abaixo de 28%');
-            ok(fatorRNormal(0, 0) === 1, 'Fator R - tudo zerado');
-
-            ok(fatorRProporcional(60000, 12000) === 20, 'Fator R - proporcional');
-            ok(fatorRInicio(1000, 2000) === 50, 'Fator R - mês de início');
-
-            ok(calcularAliquotaEfetiva(anexo3, 0) === 0.06, 'Alíquota efetiva - RBT12 zero');
-            ok(getFaixa(anexo3, 5000000) === 6, 'Faixa acima do teto usa última faixa');
-
-            const dasBase = calcularDas(15000, 0, calcularAliquotaEfetiva(anexo3, 227786), getAnexoData(anexo3, 227786));
-            ok(quase(dasBase.total, 1063.63, 0.02), 'DAS caso base');
-            const dasA5 = calcularDas(15000, 0, calcularAliquotaEfetiva(anexo5, 227786), getAnexoData(anexo5, 227786));
-            ok(quase(dasA5.total - dasBase.total, 1340.04, 0.02), 'Economia vs Anexo V caso base');
-
-            const status = document.getElementById('selfTestStatus');
-            if (falhas.length === 0) {
-                status.innerText = 'Autoverificação do cálculo aprovada';
-                status.classList.add('ok');
-                console.info('[fator-r] Autoteste: todos os cálculos validados.');
-            } else {
-                status.innerText = 'Autoverificação falhou: ' + falhas.join('; ');
-                status.classList.add('fail');
-                console.error('[fator-r] Autoteste falhou em: ', falhas);
-            }
-        }
-
-        window.onload = function() {
-            calculate();
-            runSelfTests();
-        };
-    </script>
+<body>
+<header>
+<span class="badge">LC 123/2006 &amp; Resolução CGSN Nº 140/2018 (Art. 26 e Art. 22) — v2026.09-local</span>
+<h1>Calculadora do Fator R &amp; DAS Oficial</h1>
+<p class="subtitle">Planejamento Tributário: Fator R = Folha12 / RBT12. ≥28% → Anexo III, &lt;28% → Anexo V. Alíquota efetiva = (RBT12 × aliq − dedução) / RBT12. Com retenção de ISS, desconta-se o ISS da faixa. Valores de referência — confira no PGDAS-D.</p>
+</header>
+<main>
+<div class="grid-container">
+<div class="card">
+<div class="card-header"><h2>Parâmetros de Apuração Mensal</h2></div>
+<div class="form-group"><label for="tipoEmpresa">Tempo de Atividade da Empresa</label>
+<select id="tipoEmpresa" onchange="toggleCamposEspeciais()">
+<option value="normal" selected>Empresa com 13 meses ou mais de atividade</option>
+<option value="inicio">Mês de início de atividades (1º mês)</option>
+<option value="proporcional">Empresa com menos de 13 meses de atividade (Anualizada)</option>
+</select>
+<div class="hint">Define a regra do Fator R (Art. 26) e proporção de RBT12/Folha12 (Art. 22).</div></div>
+<div class="form-group" id="groupMeses" style="display:none"><label for="mesesAtividade">Meses em Atividade (2 a 12)</label>
+<input type="text" id="mesesAtividade" value="6" inputmode="numeric" autocomplete="off" oninput="validateMeses(this);calculate();">
+<div class="hint">RBT12 = (soma receitas / meses) × 12.</div></div>
+<div class="form-group" id="groupRbt12"><label for="rbt12" id="labelRbt12">Receita Bruta Acumulada (RBT12)</label>
+<div class="input-wrapper"><span class="input-prefix">R$</span><input type="text" id="rbt12" value="227.786,00" inputmode="decimal" autocomplete="off" oninput="formatAndCalculate(this)"></div>
+<div class="hint" id="hintRbt12">Faturamento bruto dos últimos 12 meses anteriores ao PA.</div></div>
+<div class="form-group" id="groupFolha12"><label for="folha12" id="labelFolha12">Folha de Pagamento Acumulada (Folha 12)</label>
+<div class="input-wrapper"><span class="input-prefix">R$</span><input type="text" id="folha12" value="65.000,00" inputmode="decimal" autocomplete="off" oninput="formatAndCalculate(this)"></div>
+<div class="hint" id="hintFolha12">Salários, pró-labore e encargos nos últimos 12 meses.</div></div>
+<div class="form-group"><label for="recSemIss">Receita do Mês SEM Retenção de ISS (RPAr)</label>
+<div class="input-wrapper"><span class="input-prefix">R$</span><input type="text" id="recSemIss" value="15.000,00" inputmode="decimal" autocomplete="off" oninput="formatAndCalculate(this)"></div></div>
+<div class="form-group"><label for="recComIss">Receita do Mês COM Retenção de ISS</label>
+<div class="input-wrapper"><span class="input-prefix">R$</span><input type="text" id="recComIss" value="0,00" inputmode="decimal" autocomplete="off" oninput="formatAndCalculate(this)"></div>
+<div class="hint">Com retenção, o ISS não vai no DAS (Art. 27 Res. 140).</div></div>
+<div class="form-group" id="groupFspa" style="display:none"><label for="fspa">Folha do Mês Atual (FSPA)</label>
+<div class="input-wrapper"><span class="input-prefix">R$</span><input type="text" id="fspa" value="0,00" inputmode="decimal" autocomplete="off" oninput="formatAndCalculate(this)"></div>
+<div class="hint">Art. 26, § 6º.</div></div>
+<div class="form-group"><label class="check-row"><input type="checkbox" id="issOverrideChk" onchange="calculate()"> <span>Usar ISS municipal efetivo próprio (em vez do % da tabela) para a parcela COM retenção</span></label>
+<div class="input-wrapper" id="issOverrideWrap" style="display:none;margin-top:8px"><span class="input-prefix">%</span><input type="text" id="issOverride" value="5,00" inputmode="decimal" style="padding-left:42px" oninput="formatPct(this)"></div>
+<div class="hint">Limite legal 2%–5% (LC 116/2003). Se marcado, DAS com retenção = RPA × (aliqEfetiva − ISSmunicipal). Útil quando o tomador reteve por alíquota diferente.</div></div>
+<div class="btn-row no-print">
+<button type="button" class="btn btn-secondary" onclick="limparCampos()">Limpar</button>
+<button type="button" class="btn btn-ghost" onclick="copiarLink()">Copiar link</button>
+</div>
+<div class="btn-row no-print">
+<button type="button" class="btn btn-ghost" onclick="exportCSV()">Exportar CSV</button>
+<button type="button" class="btn btn-ghost" onclick="copiarResumo()">Copiar resumo</button>
+</div>
+</div>
+<div class="card">
+<div class="card-header"><h2>Diagnóstico e Cálculo do DAS Oficial</h2></div>
+<div class="avisos" id="avisos"></div>
+<div class="rec-box" id="recBox"><div class="rec-tag">RECOMENDAÇÃO TRIBUTÁRIA</div><div class="rec-title" id="recTitle">Calculando…</div><div class="rec-desc" id="recDesc"></div></div>
+<table class="metrics-table"><thead><tr><th>Métrica / Etapa</th><th style="text-align:right">Resultado</th></tr></thead><tbody>
+<tr><td>Regra do Fator R Aplicada</td><td class="val" id="resRegra">—</td></tr>
+<tr><td>Fator R Atingido</td><td class="val" id="resFatorR">—</td></tr>
+<tr><td>Enquadramento Tributário</td><td class="val" id="resEnquadramento">—</td></tr>
+<tr><td>Faixa / RBT12 usado</td><td class="val" id="resFaixa">—</td></tr>
+<tr><td>Alíquota nominal / Dedução</td><td class="val" id="resNomDed">—</td></tr>
+<tr><td>Alíquota Efetiva Base</td><td class="val" id="resAliqEfetiva">—</td></tr>
+<tr><td>ISS efetivo da faixa / usado</td><td class="val" id="resIssEf">—</td></tr>
+<tr><td>Alíquota Efetiva (COM Retenção ISS)</td><td class="val" id="resAliqComIss">—</td></tr>
+<tr><td>Imposto Receita Sem Retenção</td><td class="val" id="resImpostoSemIss">—</td></tr>
+<tr><td>Imposto Receita Com Retenção</td><td class="val" id="resImpostoComIss">—</td></tr>
+<tr class="highlight-row"><td>VALOR TOTAL DO DAS</td><td class="val" id="resTotalDas" style="color:var(--accent-green);font-size:1.05rem">—</td></tr>
+<tr class="highlight-row"><td>Economia Estimada vs Anexo V</td><td class="val" id="resEconomia" style="color:var(--accent-green);font-weight:800">—</td></tr>
+</tbody></table>
+<div class="section-title">Memória de cálculo (auditoria)</div>
+<div class="memoria" id="memoria">—</div>
+<div class="section-title">Repartição do DAS por tributo (referência PGDAS-D)</div>
+<table class="rep-table"><thead><tr><th>Tributo</th><th>% faixa</th><th>R$ sem retenção</th><th>R$ com retenção</th><th>R$ total</th></tr></thead><tbody id="repBody"></tbody></table>
+<div class="hint">Sem retenção: DAS × % repartição. Com retenção: ISS=0 no DAS; federais redistribuídos proporcionalmente. 6ª faixa: ISS fora do DAS. ISS efetivo &gt;5% limitado a 5% com redistribuição aos federais (nota da tabela oficial) — aqui exibido sem redistribuição fina; confira no PGDAS.</div>
+<div class="btn-row"><button type="button" class="btn btn-primary" onclick="window.print()">Imprimir relatório</button></div>
+</div>
+</div>
+</main>
+<footer>
+<p>© 2026 Simulador Fator R &amp; DAS Oficial — Tabelas CGSN 140/2018 v2026.09-local (Anexo III/V). Uso estimativo.</p>
+<span class="status" id="selfTestStatus">Verificando autoteste…</span>
+</footer>
+<script>
+const LIMITE_SIMPLES=4800000, SUBLIMITE_FAIXA5=3600000, TABELAS_VERSAO="CGSN140-2018-v2026.09";
+const anexo3=[
+{faixa:1,ate:180000,aliq:.06,deducao:0,issPerc:.335,rep:{irpj:.04,csll:.035,cofins:.1282,pis:.0278,cpp:.434,iss:.335}},
+{faixa:2,ate:360000,aliq:.112,deducao:9360,issPerc:.32,rep:{irpj:.04,csll:.035,cofins:.1405,pis:.0305,cpp:.434,iss:.32}},
+{faixa:3,ate:720000,aliq:.135,deducao:17640,issPerc:.325,rep:{irpj:.04,csll:.035,cofins:.1364,pis:.0296,cpp:.434,iss:.325}},
+{faixa:4,ate:1800000,aliq:.16,deducao:35640,issPerc:.325,rep:{irpj:.04,csll:.035,cofins:.1364,pis:.0296,cpp:.434,iss:.325}},
+{faixa:5,ate:3600000,aliq:.21,deducao:125640,issPerc:.335,rep:{irpj:.04,csll:.035,cofins:.1282,pis:.0278,cpp:.434,iss:.335}},
+{faixa:6,ate:4800000,aliq:.33,deducao:648000,issPerc:0,rep:{irpj:.35,csll:.15,cofins:.1603,pis:.0347,cpp:.305,iss:0}}];
+const anexo5=[
+{faixa:1,ate:180000,aliq:.155,deducao:0,issPerc:.14,rep:{irpj:.25,csll:.15,cofins:.141,pis:.0305,cpp:.2885,iss:.14}},
+{faixa:2,ate:360000,aliq:.18,deducao:4500,issPerc:.17,rep:{irpj:.23,csll:.15,cofins:.141,pis:.0305,cpp:.2785,iss:.17}},
+{faixa:3,ate:720000,aliq:.195,deducao:9900,issPerc:.19,rep:{irpj:.24,csll:.15,cofins:.1492,pis:.0323,cpp:.2385,iss:.19}},
+{faixa:4,ate:1800000,aliq:.205,deducao:17100,issPerc:.21,rep:{irpj:.21,csll:.15,cofins:.1574,pis:.0341,cpp:.2385,iss:.21}},
+{faixa:5,ate:3600000,aliq:.23,deducao:62100,issPerc:.235,rep:{irpj:.23,csll:.125,cofins:.141,pis:.0305,cpp:.2385,iss:.235}},
+{faixa:6,ate:4800000,aliq:.305,deducao:540000,issPerc:0,rep:{irpj:.35,csll:.155,cofins:.1644,pis:.0356,cpp:.295,iss:0}}];
+function parseCurrency(v){if(v==null)return 0;const l=String(v).replace(/\s/g,"");if(/^-?\d+(\.\d+)?$/.test(l))return parseFloat(l)||0;return parseFloat(l.replace(/\./g,"").replace(",","."))||0}
+function parsePct(v){if(v==null)return 0;const l=String(v).replace(/\s|%/g,"");if(l==="")return 0;if(/^-?\d+(\.\d+)?$/.test(l))return parseFloat(l)/100||0;return (parseFloat(l.replace(/\./g,"").replace(",","."))||0)/100}
+function formatCurrency(v){return v.toLocaleString("pt-BR",{minimumFractionDigits:2,maximumFractionDigits:2})}
+function formatPctInput(v){return (v*100).toLocaleString("pt-BR",{minimumFractionDigits:2,maximumFractionDigits:2})}
+function formatAndCalculate(i){let v=i.value.replace(/\D/g,"");if(v==="")v="0";i.value=formatCurrency(parseFloat(v)/100);calculate()}
+function formatPct(el){const raw=el.value.replace(/[^\d,.\-]/g,"");const num=parseCurrency(raw)/100;let pct=num>1?num/100:num;if(pct>1)pct=1;if(pct<0)pct=0;el.value=formatPctInput(pct);calculate()}
+function limparCampos(){document.getElementById("tipoEmpresa").value="normal";["rbt12","folha12","recSemIss","recComIss","fspa"].forEach(id=>document.getElementById(id).value="0,00");document.getElementById("mesesAtividade").value="6";document.getElementById("issOverrideChk").checked=false;document.getElementById("issOverride").value="5,00";validateMeses(document.getElementById("mesesAtividade"));toggleCamposEspeciais()}
+function validateMeses(input){const v=parseInt(String(input.value).replace(/\D/g,""),10);input.classList.toggle("input-invalid",!(v>=2&&v<=12))}
+function getAnexoData(t,r){for(const l of t){if(r<=l.ate)return l}return t[t.length-1]}
+function getFaixa(t,r){return getAnexoData(t,r).faixa}
+function calcularAliquotaEfetiva(t,r){const l=getAnexoData(t,r);if(r>0)return Math.max(((r*l.aliq)-l.deducao)/r,0);return l.aliq}
+function fatorRNormal(r,f){if(f===0&&r===0)return 1;if(f>0&&r===0)return 28;if(f>0&&r>0)return(f/r)*100;return 1}
+function fatorRProporcional(sR,sF){if(sF===0&&sR===0)return 1;if(sF>0&&sR===0)return 28;if(sF>0&&sR>0)return(sF/sR)*100;return 1}
+function fatorRInicio(fspa,rpar){if(fspa>0&&rpar===0)return 28;if(fspa===0&&rpar>0)return 1;if(fspa>0&&rpar>0)return(fspa/rpar)*100;return 1}
+function toggleCamposEspeciais(){const tipo=document.getElementById("tipoEmpresa").value;const gM=document.getElementById("groupMeses"),gR=document.getElementById("groupRbt12"),gF=document.getElementById("groupFolha12"),gS=document.getElementById("groupFspa");const lR=document.getElementById("labelRbt12"),hR=document.getElementById("hintRbt12"),lF=document.getElementById("labelFolha12"),hF=document.getElementById("hintFolha12");
+if(tipo==="inicio"){gM.style.display="none";gR.style.display="none";gF.style.display="none";gS.style.display="block"}
+else if(tipo==="proporcional"){gM.style.display="block";gR.style.display="block";gF.style.display="block";gS.style.display="none";lR.innerText="Soma das Receitas Acumuladas nos Meses Anteriores";hR.innerText="Soma do faturamento dos meses em atividade antes do PA.";lF.innerText="Soma das Folhas Acumuladas nos Meses Anteriores";hF.innerText="Soma da massa salarial/pró-labore dos meses em atividade."}
+else{gM.style.display="none";gR.style.display="block";gF.style.display="block";gS.style.display="none";lR.innerText="Receita Bruta Acumulada (RBT12)";hR.innerText="Faturamento bruto dos últimos 12 meses anteriores ao PA.";lF.innerText="Folha de Pagamento Acumulada (Folha 12)";hF.innerText="Salários, pró-labore e encargos nos últimos 12 meses."}
+document.getElementById("issOverrideWrap").style.display=document.getElementById("issOverrideChk").checked?"flex":"none";
+calculate()}
+document.getElementById("issOverrideChk").addEventListener("change",()=>{document.getElementById("issOverrideWrap").style.display=document.getElementById("issOverrideChk").checked?"flex":"none";calculate()});
+function calcularProLaboreNecessario(tipo,rbt,f){if(tipo==="inicio"){const fspa=parseCurrency(document.getElementById("fspa").value);const rpar=parseCurrency(document.getElementById("recSemIss").value)+parseCurrency(document.getElementById("recComIss").value);return(rpar*.28)-fspa}if(tipo==="proporcional"){let m=parseInt(document.getElementById("mesesAtividade").value.replace(/\D/g,""),10)||1;m=Math.min(Math.max(m,1),12);return(parseCurrency(document.getElementById("rbt12").value)*.28)-parseCurrency(document.getElementById("folha12").value)}return(rbt*.28)-f}
+let LAST=null;
+function calculate(){const tipo=document.getElementById("tipoEmpresa").value;const avisos=[];
+const recSemIss=parseCurrency(document.getElementById("recSemIss").value),recComIss=parseCurrency(document.getElementById("recComIss").value),rpar=recSemIss+recComIss;
+let rbt12Calc=0,folha12Calc=0,fatorR=0,regra="",meses=0;
+if(tipo==="inicio"){regra="Art. 26, § 6º (Mês de Início)";const fspa=parseCurrency(document.getElementById("fspa").value);fatorR=fatorRInicio(fspa,rpar);rbt12Calc=rpar*12;folha12Calc=fspa*12;if(fspa===0)avisos.push({tipo:"warn",msg:"FSPA zerada. Fator R arbitrado em "+fatorR.toFixed(2).replace(".",",")+"% (§ 6º). Confira a folha do mês."})}
+else if(tipo==="proporcional"){regra="Art. 26, § 4º (<13 meses)";meses=parseInt(document.getElementById("mesesAtividade").value.replace(/\D/g,""),10)||0;const mUsed=Math.min(Math.max(meses||2,2),12);const sR=parseCurrency(document.getElementById("rbt12").value),sF=parseCurrency(document.getElementById("folha12").value);rbt12Calc=(sR/mUsed)*12;folha12Calc=(sF/mUsed)*12;fatorR=fatorRProporcional(sR,sF);meses=mUsed;const dig=parseInt(document.getElementById("mesesAtividade").value.replace(/\D/g,""),10)||0;if(dig<2||dig>12)avisos.push({tipo:"error",msg:"Meses fora de 2–12. Usado "+mUsed+" meses."});if(sR===0)avisos.push({tipo:"warn",msg:"Soma receitas zerada. Fator R arbitrado (§ 7º)."});if(sF===0)avisos.push({tipo:"warn",msg:"Soma folhas zerada. Enquadramento pende ao Anexo V."})}
+else{regra="Art. 26, Caput (Regra Geral)";rbt12Calc=parseCurrency(document.getElementById("rbt12").value);folha12Calc=parseCurrency(document.getElementById("folha12").value);fatorR=fatorRNormal(rbt12Calc,folha12Calc);if(rbt12Calc===0)avisos.push({tipo:"warn",msg:"RBT12 zerado. Fator R arbitrado (§ 7º)."});if(folha12Calc===0)avisos.push({tipo:"warn",msg:"Folha12 zerada. Fator R no piso (1%). Confira a massa salarial."})}
+if(rbt12Calc>LIMITE_SIMPLES)avisos.push({tipo:"error",msg:"RBT12 R$ "+formatCurrency(rbt12Calc)+" excede o teto do Simples (R$ "+formatCurrency(LIMITE_SIMPLES)+"). Cálculo apenas referencial."});
+if(rpar===0)avisos.push({tipo:"info",msg:"Sem receita no PA (RPAr = 0). DAS = R$ 0,00."});
+const isA3=fatorR>=28-1e-9,tabela=isA3?anexo3:anexo5,linha=getAnexoData(tabela,rbt12Calc),aliqEfetiva=calcularAliquotaEfetiva(tabela,rbt12Calc);
+let issPercTabela=linha.issPerc,issTaxaTabela=aliqEfetiva*issPercTabela;
+const useOverride=document.getElementById("issOverrideChk").checked;
+let issTaxaUsada=issTaxaTabela,issFonte="tabela ("+(issPercTabela*100).toFixed(2).replace(".",",")+"% da guia)";
+if(useOverride){let ov=parsePct(document.getElementById("issOverride").value);ov=Math.min(Math.max(ov,0),.05);if(ov*100<2)avisos.push({tipo:"warn",msg:"ISS municipal abaixo de 2% (mínimo LC 116). Usado "+(ov*100).toFixed(2).replace(".",",")+"% mesmo assim."});issTaxaUsada=Math.min(ov,aliqEfetiva);issFonte="municipal ("+(ov*100).toFixed(2).replace(".",",")+"% sobre RPA)"}
+if(issTaxaUsada*100>5.0001)avisos.push({tipo:"warn",msg:"ISS efetivo "+(issTaxaUsada*100).toFixed(2).replace(".",",")+"% supera 5%: PGDAS limita ISS a 5% e redistribui aos federais. Aqui sem redistribuição fina."});
+const aliqComIss=Math.max(aliqEfetiva-issTaxaUsada,0);
+const impSem=recSemIss*aliqEfetiva,impCom=recComIss*aliqComIss,total=impSem+impCom;
+if(linha.faixa===6)avisos.push({tipo:"warn",msg:"6ª faixa: ISS fora do DAS (recolhido à parte) e CPP com alíquota própria. Confira PGDAS-D e guia municipal."});
+if(rbt12Calc>SUBLIMITE_FAIXA5&&rbt12Calc<=LIMITE_SIMPLES)avisos.push({tipo:"warn",msg:"RBT12 acima de R$ "+formatCurrency(SUBLIMITE_FAIXA5)+": observe sublimite estadual de ICMS/ISS — ISS pode ir para guia própria."});
+let economia=0,temComp=false;
+if(isA3){const l5=getAnexoData(anexo5,rbt12Calc),a5=calcularAliquotaEfetiva(anexo5,rbt12Calc);const iss5=a5*l5.issPerc;const iS=recSemIss*a5,iC=recComIss*Math.max(a5-iss5,0);economia=Math.max((iS+iC)-total,0);temComp=true}
+renderAvisos(avisos);
+document.getElementById("resRegra").innerText=regra;
+document.getElementById("resFatorR").innerText=fatorR.toFixed(2).replace(".",",")+"%";
+document.getElementById("resFaixa").innerText=linha.faixa+"ª Faixa (RBT12: R$ "+formatCurrency(rbt12Calc)+")";
+document.getElementById("resNomDed").innerText=(linha.aliq*100).toFixed(2).replace(".",",")+"% / R$ "+formatCurrency(linha.deducao);
+document.getElementById("resAliqEfetiva").innerText=(aliqEfetiva*100).toFixed(5).replace(".",",")+"%";
+document.getElementById("resIssEf").innerText=(issTaxaUsada*100).toFixed(5).replace(".",",")+"% — "+issFonte;
+document.getElementById("resAliqComIss").innerText=(aliqComIss*100).toFixed(5).replace(".",",")+"%";
+document.getElementById("resImpostoSemIss").innerText="R$ "+formatCurrency(impSem);
+document.getElementById("resImpostoComIss").innerText="R$ "+formatCurrency(impCom);
+document.getElementById("resTotalDas").innerText="R$ "+formatCurrency(total);
+document.getElementById("resEconomia").innerText=temComp?"R$ "+formatCurrency(economia):"—";
+document.getElementById("memoria").innerText=
+"RBT12 usado: R$ "+formatCurrency(rbt12Calc)+"\nFolha12 usada: R$ "+formatCurrency(folha12Calc)+"\nFator R = "+formatCurrency(folha12Calc)+" / "+formatCurrency(rbt12Calc)+" = "+fatorR.toFixed(4).replace(".",",")+"% → "+(isA3?"Anexo III":"Anexo V")+"\nFaixa: "+linha.faixa+"ª | Aliq nominal: "+(linha.aliq*100).toFixed(2).replace(".",",")+"% | Dedução: R$ "+formatCurrency(linha.deducao)+"\nAliq efetiva = ("+formatCurrency(rbt12Calc)+" × "+(linha.aliq*100).toFixed(2).replace(".",",")+"% − "+formatCurrency(linha.deducao)+") / "+formatCurrency(rbt12Calc)+" = "+(aliqEfetiva*100).toFixed(5).replace(".",",")+"%\nDAS sem retenção = "+formatCurrency(recSemIss)+" × "+(aliqEfetiva*100).toFixed(5).replace(".",",")+"% = R$ "+formatCurrency(impSem)+"\nDAS com retenção = "+formatCurrency(recComIss)+" × "+(aliqComIss*100).toFixed(5).replace(".",",")+"% = R$ "+formatCurrency(impCom)+"\nTOTAL DAS = R$ "+formatCurrency(total)+"  | Tabelas "+TABELAS_VERSAO;
+renderRep(linha,impSem,impCom,aliqEfetiva,issTaxaUsada);
+const box=document.getElementById("recBox"),t=document.getElementById("recTitle"),d=document.getElementById("recDesc");
+if(isA3){document.getElementById("resEnquadramento").innerHTML='<span class="tag-anexo tag-anexo3">Anexo III</span>';box.style.background="var(--bg-green)";box.style.borderColor="var(--border-green)";t.innerText="Tributado no Anexo III";t.style.color="#065f46";d.innerHTML="Fator R de <strong>"+fatorR.toFixed(2).replace(".",",")+"%</strong> (≥ 28%). Menor carga do Simples.";d.style.color="#047857"}
+else{document.getElementById("resEnquadramento").innerHTML='<span class="tag-anexo tag-anexo5">Anexo V</span>';const nec=Math.max(calcularProLaboreNecessario(tipo,rbt12Calc,folha12Calc),0);box.style.background="#fef2f2";box.style.borderColor="#fca5a5";t.innerText="Tributado no Anexo V";t.style.color="#991b1b";const tp=tipo==="inicio"?"no próprio mês":"no período acumulado";d.innerHTML="Fator R de <strong>"+fatorR.toFixed(2).replace(".",",")+"%</strong> (< 28%). Para migrar, aumente folha/pró-labore em <strong>R$ "+formatCurrency(nec)+"</strong> "+tp+".";d.style.color="#b91c1c"}
+LAST={tipo,meses:document.getElementById("mesesAtividade").value,rbt12:document.getElementById("rbt12").value,folha12:document.getElementById("folha12").value,recSemIss:document.getElementById("recSemIss").value,recComIss:document.getElementById("recComIss").value,fspa:document.getElementById("fspa").value,issChk:useOverride,issVal:document.getElementById("issOverride").value,fatorR,rbt12Calc,folha12Calc,aliqEfetiva,aliqComIss,total,isA3,faixa:linha.faixa};
+try{localStorage.setItem("fatorR",JSON.stringify({tipo,meses:document.getElementById("mesesAtividade").value,rbt12:document.getElementById("rbt12").value,folha12:document.getElementById("folha12").value,recSemIss:document.getElementById("recSemIss").value,recComIss:document.getElementById("recComIss").value,fspa:document.getElementById("fspa").value,issChk:useOverride,issVal:document.getElementById("issOverride").value}))}catch(e){}
+}
+function renderRep(linha,impSem,impCom,aliqEfetiva,issTaxaUsada){
+const names=[["irpj","IRPJ"],["csll","CSLL"],["cofins","Cofins"],["pis","PIS"],["cpp","CPP"],["iss","ISS"]];
+const fedSum=1-linha.issPerc;
+let html="";
+for(const[k,label]of names){
+const perc=k==="iss"?(useIssOverrideParaRep()?issTaxaUsada/Math.max(aliqEfetiva,1e-12):linha.rep[k]):linha.rep[k];
+const vSem=k==="iss"?(useIssOverrideParaRep()?impSem*(issTaxaUsada/Math.max(aliqEfetiva,1e-12)):impSem*linha.rep[k]):impSem*linha.rep[k];
+let vCom=0;
+if(k!=="iss"){vCom=fedSum>0?impCom*(linha.rep[k]/fedSum):impCom/5}
+html+="<tr><td>"+label+"</td><td>"+(perc*100).toFixed(2).replace(".",",")+"%</td><td>R$ "+formatCurrency(vSem)+"</td><td>R$ "+formatCurrency(vCom)+"</td><td>R$ "+formatCurrency(vSem+vCom)+"</td></tr>"}
+document.getElementById("repBody").innerHTML=html;
+}
+function useIssOverrideParaRep(){return document.getElementById("issOverrideChk").checked}
+function renderAvisos(avisos){const c=document.getElementById("avisos");if(!avisos.length){c.innerHTML='<div class="aviso aviso-ok"><span class="icone">OK</span><span>Nenhum alerta: dados consistentes.</span></div>';return}c.innerHTML=avisos.map(a=>'<div class="aviso aviso-'+a.tipo+'"><span class="icone">'+(a.tipo==="error"?"X":a.tipo==="warn"?"!":"i")+"</span><span>"+a.msg+"</span></div>").join("")}
+function getInputsQS(){const p=new URLSearchParams(location.search);if(!p.get("rbt12")&&!p.get("tipo"))return null;return{tipo:p.get("tipo")||"normal",meses:p.get("meses")||"6",rbt12:p.get("rbt12"),folha12:p.get("folha12"),recSemIss:p.get("recSem"),recComIss:p.get("recCom"),fspa:p.get("fspa"),issChk:p.get("issChk")==="1",issVal:p.get("issVal")}}
+function applyInputs(o){if(!o)return;if(o.tipo)document.getElementById("tipoEmpresa").value=o.tipo;if(o.meses)document.getElementById("mesesAtividade").value=o.meses;const set=(id,v)=>{if(v==null)return;try{const n=parseFloat(String(v).replace(",","."));document.getElementById(id).value=formatCurrency(isNaN(n)?parseCurrency(v):n)}catch(e){}};set("rbt12",o.rbt12);set("folha12",o.folha12);set("recSemIss",o.recSemIss);set("recComIss",o.recComIss);set("fspa",o.fspa);document.getElementById("issOverrideChk").checked=!!o.issChk;if(o.issVal){try{document.getElementById("issOverride").value=formatPctInput(Math.min(Math.max(parseFloat(String(o.issVal).replace(",","."))/100||parsePct(o.issVal),0),.05))}catch(e){}}}
+function copiarLink(){calculate();const q=new URLSearchParams({tipo:document.getElementById("tipoEmpresa").value,meses:document.getElementById("mesesAtividade").value.replace(/\D/g,"")||"6",rbt12:parseCurrency(document.getElementById("rbt12").value).toFixed(2),folha12:parseCurrency(document.getElementById("folha12").value).toFixed(2),recSem:parseCurrency(document.getElementById("recSemIss").value).toFixed(2),recCom:parseCurrency(document.getElementById("recComIss").value).toFixed(2),fspa:parseCurrency(document.getElementById("fspa").value).toFixed(2),issChk:document.getElementById("issOverrideChk").checked?"1":"0",issVal:(parsePct(document.getElementById("issOverride").value)*100).toFixed(2)});const url=location.origin+location.pathname+"?"+q.toString();(navigator.clipboard?navigator.clipboard.writeText(url):Promise.reject()).then(()=>alert("Link copiado:\n"+url)).catch(()=>prompt("Copie o link:",url))}
+function exportCSV(){if(!LAST)return;const L=LAST;const rows=[["campo","valor"],["versao_tabelas",TABELAS_VERSAO],["tipo",L.tipo],["rbt12_calc",L.rbt12Calc.toFixed(2)],["folha12_calc",L.folha12Calc.toFixed(2)],["fatorR_pct",L.fatorR.toFixed(4)],["anexo",L.isA3?"III":"V"],["faixa",L.faixa],["aliq_efetiva",L.aliqEfetiva.toFixed(6)],["aliq_com_iss",L.aliqComIss.toFixed(6)],["rec_sem",parseCurrency(L.recSemIss).toFixed(2)],["rec_com",parseCurrency(L.recComIss).toFixed(2)],["das_total",L.total.toFixed(2)]];const csv=rows.map(r=>r.join(";")).join("\n");const b=new Blob(["\ufeff"+csv],{type:"text/csv"});const a=document.createElement("a");a.href=URL.createObjectURL(b);a.download="fator-r-das.csv";a.click();setTimeout(()=>URL.revokeObjectURL(a.href),2000)}
+function copiarResumo(){if(!LAST)return;const t="Fator R "+LAST.fatorR.toFixed(2).replace(".",",")+"% → Anexo "+(LAST.isA3?"III":"V")+" Faixa "+LAST.faixa+" | Efetiva "+(LAST.aliqEfetiva*100).toFixed(5).replace(".",",")+"% | DAS R$ "+formatCurrency(LAST.total)+" | RBT12 R$ "+formatCurrency(LAST.rbt12Calc);(navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).then(()=>alert("Resumo copiado")).catch(()=>prompt("Copie:",t))}
+function quase(a,b,t){return Math.abs(a-b)<=t}
+function runSelfTests(){const f=[];const ok=(c,n)=>{if(!c)f.push(n)};
+ok(quase(fatorRNormal(227786,65000),28.5356,.01),"FatorR base");
+ok(getFaixa(anexo3,227786)===2,"Faixa III base");
+ok(quase(calcularAliquotaEfetiva(anexo3,227786),.0709088,1e-6),"Aliq III base");
+ok(quase(calcularAliquotaEfetiva(anexo5,227786),.1602446,1e-6),"Aliq V base");
+ok(quase(fatorRNormal(100000,28000),28,1e-9),"limite 28");
+ok(fatorRNormal(100000,27999)<28,"abaixo 28");
+ok(fatorRProporcional(60000,12000)===20,"prop");
+ok(fatorRInicio(1000,2000)===50,"inicio");
+ok(calcularAliquotaEfetiva(anexo3,0)===.06,"RBT zero");
+const ae=calcularAliquotaEfetiva(anexo3,227786),ln=getAnexoData(anexo3,227786);
+ok(quase(15000*ae,1063.63,.02),"DAS base");
+ok(quase((15000*calcularAliquotaEfetiva(anexo5,227786))-(15000*ae),1340.04,.02),"economia base");
+ok(anexo3[0].rep.iss===.335&&anexo5[0].rep.iss===.14,"rep III/V f1");
+ok(anexo3[5].issPerc===0&&anexo5[5].issPerc===0,"6a faixa sem ISS");
+const s=document.getElementById("selfTestStatus");
+if(!f.length){s.innerText="Autoverificação aprovada ("+TABELAS_VERSAO+")";s.classList.add("ok")}else{s.innerText="Falhou: "+f.join("; ");s.classList.add("fail");console.error(f)}}
+window.onload=function(){const qs=getInputsQS();if(qs)applyInputs(qs);else{try{const sv=JSON.parse(localStorage.getItem("fatorR")||"null");if(sv)applyInputs(sv)}catch(e){}}validateMeses(document.getElementById("mesesAtividade"));toggleCamposEspeciais();runSelfTests()};
+</script>
 </body>
 </html>
